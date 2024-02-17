@@ -129,6 +129,8 @@ _SaxEventNames = Literal[
 
 _ET = TypeVar("_ET", bound=_Element)
 _ET_co = TypeVar("_ET_co", bound=_Element, covariant=True)
+_ETT = TypeVar("_ETT", bound=_ElementTree[_Element])
+_ETT_co = TypeVar("_ETT_co", bound=_ElementTree[_Element], covariant=True)
 
 # Generic element factory function type. Because arguments are
 # mostly optional, accurate typing can't be done.

@@ -8,7 +8,7 @@
     - args: namespace=ns
       et: _Element
     - args: makeelement=etree.Element
-      et: _Element
+      et: Element
     - args: makeelement=etree.Comment
       et: _Comment
     - args: namespace=ns, nsmap=map
