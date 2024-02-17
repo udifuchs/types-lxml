@@ -65,9 +65,9 @@
     t2: etree.ParserTarget[Optional[List[str]]]
     reveal_type(etree.{{ parser }}(target=t1))  # N: Revealed type is "lxml.etree._parser.{{ parser }}[builtins.str]"
     reveal_type(etree.{{ parser }}(target=t2))  # N: Revealed type is "lxml.etree._parser.{{ parser }}[Union[builtins.list[builtins.str], None]]"
-    reveal_type(etree.{{ parser }}(target=None))  # N: Revealed type is "lxml.etree._parser.{{ parser }}[lxml.etree._Element]"
-    reveal_type(etree.{{ parser }}(target=etree.TreeBuilder()))  # N: Revealed type is "lxml.etree._parser.{{ parser }}[lxml.etree._Element]"
-    reveal_type(etree.{{ parser }}())  # N: Revealed type is "lxml.etree._parser.{{ parser }}[lxml.etree._Element]"
+    reveal_type(etree.{{ parser }}(target=None))  # N: Revealed type is "lxml.etree._parser.{{ parser }}[lxml.etree.Element]"
+    reveal_type(etree.{{ parser }}(target=etree.TreeBuilder()))  # N: Revealed type is "lxml.etree._parser.{{ parser }}[lxml.etree.Element]"
+    reveal_type(etree.{{ parser }}())  # N: Revealed type is "lxml.etree._parser.{{ parser }}[lxml.etree.Element]"
 
 - case: custom_feedparser_close
   parametrized:
@@ -77,9 +77,9 @@
     from typing import List, Optional
     from lxml import etree
     p1: {{ parser }}[Optional[List[str]]]
-    p2: {{ parser }}[etree._Element]
+    p2: {{ parser }}[etree.Element]
     reveal_type(p1.close())  # N: Revealed type is "Union[builtins.list[builtins.str], None]"
-    reveal_type(p2.close())  # NR: .+ "[\w\.]+\._Element"$
+    reveal_type(p2.close())  # NR: .+ "[\w\.]+\.Element"$
 
 - case: et_factory
   parametrized:
@@ -88,13 +88,13 @@
     - args: "file=fileio, parser=p2"
       rt: "builtins.list[builtins.str]"
     - args: "file=filename, parser=p3"
-      rt: "lxml.etree._Element"
+      rt: "lxml.etree.Element"
     - args: "file=fileio, parser=p4"
-      rt: "lxml.etree._Element"
+      rt: "lxml.etree.Element"
     - args: "parser=p3"
-      rt: "lxml.etree._ElementTree[lxml.etree._Element]"
+      rt: "lxml.etree.ElementTree[lxml.etree.Element]"
     - args: "file=None, parser=p4"
-      rt: "lxml.etree._ElementTree[lxml.etree._Element]"
+      rt: "lxml.etree.ElementTree[lxml.etree.Element]"
   main: |
     from typing import List
     from lxml import etree
@@ -102,8 +102,8 @@
     fileio = open(filename, 'r')
     p1: etree.XMLParser[str]
     p2: etree.HTMLParser[List[str]]
-    p3: etree.XMLParser[etree._Element]
-    p4: etree.HTMLParser[etree._Element]
+    p3: etree.XMLParser[etree.Element]
+    p4: etree.HTMLParser[etree.Element]
     reveal_type(etree.ElementTree({{ args }}))  # N: Revealed type is "{{ rt }}"
 
 - case: et_factory_badarg
@@ -113,11 +113,11 @@
     - args: "parser=p1"
   main: |
     from lxml import etree
-    elem: etree._Element
+    elem: etree.Element
     p1: etree.XMLParser[str]
     p2: etree.HTMLParser[List[str]]
-    p3: etree.XMLParser[etree._Element]
-    p4: etree.HTMLParser[etree._Element]
+    p3: etree.XMLParser[etree.Element]
+    p4: etree.HTMLParser[etree.Element]
     result = etree.ElementTree({{ args }})
 
 - case: fromstring
@@ -127,15 +127,15 @@
     - args: "doc, parser=p2"
       rt: "builtins.list[builtins.str]"
     - args: "text=doc, parser=p3"
-      rt: "lxml.etree._Element"
+      rt: "lxml.etree.Element"
   main: |
     from typing import List
     from lxml import etree
     doc: str
     p1: etree.XMLParser[str]
     p2: etree.HTMLParser[List[str]]
-    p3: etree.XMLParser[etree._Element]
-    p4: etree.HTMLParser[etree._Element]
+    p3: etree.XMLParser[etree.Element]
+    p4: etree.HTMLParser[etree.Element]
     reveal_type(etree.fromstring({{ args }}))  # N: Revealed type is "{{ rt }}"
 
 - case: fromstring_family
@@ -148,18 +148,18 @@
       rt: "builtins.list[builtins.str]"
     - func: XML
       args: "text=doc, parser=p3"
-      rt: "lxml.etree._Element"
+      rt: "lxml.etree.Element"
     - func: HTML
       args: "text=doc, parser=p4"
-      rt: "lxml.etree._Element"
+      rt: "lxml.etree.Element"
   main: |
     from typing import List
     from lxml import etree
     doc: str
     p1: etree.XMLParser[str]
     p2: etree.HTMLParser[List[str]]
-    p3: etree.XMLParser[etree._Element]
-    p4: etree.HTMLParser[etree._Element]
+    p3: etree.XMLParser[etree.Element]
+    p4: etree.HTMLParser[etree.Element]
     reveal_type(etree.{{ func }}({{ args }}))  # N: Revealed type is "{{ rt }}"
 
 - case: combined

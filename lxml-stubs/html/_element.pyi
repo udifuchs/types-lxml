@@ -21,7 +21,7 @@ _HANDLE_FAILURES = Literal["ignore", "discard"]
 #
 # Making some compromise for HTML, in that iteration of subelements
 # and methods would produce HTML elements instead of the base
-# etree._Element. It is technically "correct" that those operations
+# etree.Element. It is technically "correct" that those operations
 # may not produce HTML elements when XML nodes are manually inserted
 # into documents or fragments. However, arguably 99.9% of user cases
 # don't involve such manually constructed hybrid element trees.
@@ -42,10 +42,10 @@ _HANDLE_FAILURES = Literal["ignore", "discard"]
 # underscore for private classes is only selectively followed in lxml, and
 # HtmlMixin is one of the exceptions.
 #
-# 3. HtmlMixin.cssselect() differs by a missing star from _Element counterpart.
+# 3. HtmlMixin.cssselect() differs by a missing star from Element counterpart.
 # This causes grievance for mypy, which jumps up and down screaming about
 # incompatible signature for HtmlElement and EACH AND EVERY subclasses.
-# Let's stop the nonsense by promoting the usage in _Element.
+# Let's stop the nonsense by promoting the usage in Element.
 #
 class HtmlElement(etree.ElementBase):
     #
@@ -61,7 +61,7 @@ class HtmlElement(etree.ElementBase):
     def body(self) -> HtmlElement: ...
     @property
     def head(self) -> HtmlElement: ...
-    # set() differs from _Element.set() -- value has default, can accept None,
+    # set() differs from Element.set() -- value has default, can accept None,
     # which means boolean attribute without value, like <option selected>
     def set(self, key: _AttrName, value: _AttrVal | None = ...) -> None: ...
     def drop_tree(self) -> None: ...
@@ -107,9 +107,9 @@ class HtmlElement(etree.ElementBase):
         resolve_base_href: bool = ...,
         base_href: str | None = ...,
     ) -> None: ...
-    # Overriding of most _Element methods
+    # Overriding of most Element methods
     #
-    # Subclassing of _Element should not go beyond HtmlElement. For example,
+    # Subclassing of Element should not go beyond HtmlElement. For example,
     # while children of HtmlElement are mostly HtmlElement, FormElement never
     # contains FormElement as child.
     @overload
@@ -135,7 +135,7 @@ class HtmlElement(etree.ElementBase):
     def getparent(self) -> HtmlElement | None: ...
     def getnext(self) -> HtmlElement | None: ...
     def getprevious(self) -> HtmlElement | None: ...
-    def getroottree(self) -> etree._ElementTree[HtmlElement]: ...
+    def getroottree(self) -> etree.ElementTree[HtmlElement]: ...
     @overload
     def itersiblings(
         self, *tags: _TagSelector, preceding: bool = ...

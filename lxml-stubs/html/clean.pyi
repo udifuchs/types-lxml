@@ -2,15 +2,15 @@ from typing import Iterable, Pattern, TypeVar, Union, overload
 from typing_extensions import TypeAlias
 
 from .._types import Unused, _ElemFactory
-from ..etree import _Element, _ElementTree
+from ..etree import Element, ElementTree
 from . import HtmlElement
 from ._funcs import _HtmlDoc_T, _HtmlElemOrTree
 
 # Version of tag selector that doesn't support QName helper
-_HTagSelector: TypeAlias = Union[str, bytes, _ElemFactory[_Element]]
+_HTagSelector: TypeAlias = Union[str, bytes, _ElemFactory[Element]]
 
 # Similar to _funcs._HtmlDoc_T, but also supports ET; only used in Cleaner
-_DT = TypeVar("_DT", str, bytes, HtmlElement, _ElementTree[HtmlElement])
+_DT = TypeVar("_DT", str, bytes, HtmlElement, ElementTree[HtmlElement])
 
 class Cleaner:
     # allow_tags and remove_unknown_tags can't coexist

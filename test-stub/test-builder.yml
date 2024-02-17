@@ -1,27 +1,27 @@
 - case: default_element_factory
   main: |
     from lxml.builder import E
-    reveal_type(E)  # NR: .+ "[\w\.]+\.ElementMaker\[[\w\.]+\._Element]"$
+    reveal_type(E)  # NR: .+ "[\w\.]+\.ElementMaker\[[\w\.]+\.Element]"$
 
 - case: custom_element_factory
   parametrized:
     - args: namespace=ns
-      et: _Element
+      et: Element
     - args: makeelement=etree.Element
-      et: _Element
+      et: Element
     - args: makeelement=etree.Comment
       et: _Comment
     - args: namespace=ns, nsmap=map
-      et: _Element
+      et: Element
     - args: typemap=typemap
-      et: _Element
+      et: Element
   main: |
     from typing import Dict
     from lxml.builder import ElementMaker
     from lxml import etree
     ns: str
     map: Dict[str, str]
-    def add_text(elem: etree._Element, item: str) -> None: ...
+    def add_text(elem: etree.Element, item: str) -> None: ...
     typemap = {str: add_text}
     E = ElementMaker({{ args }})
     reveal_type(E)  # NR: .+ "[\w\.]+\.ElementMaker\[[\w\.]+\.{{et}}]"$
@@ -38,8 +38,8 @@
     - method: __nonExistent__
   main: |
     from lxml.builder import E
-    reveal_type(E.{{ method }})  # NR: .+ "def \(.+\) -> [\w\.]+\._Element"$
-    reveal_type(E.{{ method }}())  # NR: .+ "[\w\.]+\._Element"$
+    reveal_type(E.{{ method }})  # NR: .+ "def \(.+\) -> [\w\.]+\.Element"$
+    reveal_type(E.{{ method }}())  # NR: .+ "[\w\.]+\.Element"$
 
 # Directly taken from lxml.builder docstring example
 - case: complex_example
@@ -69,7 +69,7 @@
         )
       )
     )
-    reveal_type(page)  # NR: .+ "[\w\.]+\._Element"$
+    reveal_type(page)  # NR: .+ "[\w\.]+\.Element"$
 
 - case: html_builder_create_elements
   parametrized:

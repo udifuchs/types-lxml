@@ -43,10 +43,10 @@
   main: |
     from lxml.html.clean import Cleaner
     from lxml.html import HtmlElement
-    from lxml.etree import _ElementTree
+    from lxml.etree import ElementTree
     c: Cleaner
     root: HtmlElement
-    tree: _ElementTree[HtmlElement]
+    tree: ElementTree[HtmlElement]
     c({{ args }})
 
 - case: html_funcs_accept_str_and_elem
@@ -62,7 +62,7 @@
       rt: '[\w\.]+\.HtmlElement'
     - func: c.clean_html
       args: tree
-      rt: '[\w\.]+\._ElementTree\[[\w\.]+\.HtmlElement]'
+      rt: '[\w\.]+\.ElementTree\[[\w\.]+\.HtmlElement]'
     - func: clean.clean_html
       args: s
       rt: 'builtins\.str'
@@ -74,7 +74,7 @@
       rt: '[\w\.]+\.HtmlElement'
     - func: clean.clean_html
       args: tree
-      rt: '[\w\.]+\._ElementTree\[[\w\.]+\.HtmlElement]'
+      rt: '[\w\.]+\.ElementTree\[[\w\.]+\.HtmlElement]'
     - func: clean.autolink_html
       args: s
       rt: 'builtins\.str'
@@ -95,12 +95,12 @@
       rt: '[\w\.]+\.HtmlElement'
   main: |
     from lxml.html import clean, HtmlElement
-    from lxml.etree import _ElementTree
+    from lxml.etree import ElementTree
     c: clean.Cleaner
     s: str
     b: bytes
     root: HtmlElement
-    tree: _ElementTree[HtmlElement]
+    tree: ElementTree[HtmlElement]
     reveal_type({{ func }}({{ args }}))  # NR: Revealed type is "{{ rt }}"
 
 - case: clean_html_func_badargs

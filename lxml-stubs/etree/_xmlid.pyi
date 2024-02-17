@@ -2,7 +2,7 @@ from typing import Collection, Generic, Iterator, overload
 from typing_extensions import Self
 
 from .._types import _ET, _AnyStr, _FileReadSource
-from ._element import _Element, _ElementTree
+from ._element import Element, ElementTree
 from ._parser import _DefEtreeParsers
 
 # arguments for these module funcs are the same as XML() and parse()
@@ -20,7 +20,7 @@ def XMLID(
     parser: None = ...,
     *,
     base_url: _AnyStr | None = ...,
-) -> tuple[_Element, dict[str, _Element]]: ...
+) -> tuple[Element, dict[str, Element]]: ...
 
 # It is interesting how _IDDict is used below but not above
 
@@ -37,21 +37,21 @@ def XMLDTDID(
     parser: None = ...,
     *,
     base_url: _AnyStr | None = ...,
-) -> tuple[_Element, _IDDict[_Element]]: ...
+) -> tuple[Element, _IDDict[Element]]: ...
 @overload
 def parseid(
     source: _FileReadSource,
     parser: _DefEtreeParsers[_ET],
     *,
     base_url: _AnyStr | None = ...,
-) -> tuple[_ElementTree[_ET], _IDDict[_ET]]: ...
+) -> tuple[ElementTree[_ET], _IDDict[_ET]]: ...
 @overload
 def parseid(
     source: _FileReadSource,
     parser: None = ...,
     *,
     base_url: _AnyStr | None = ...,
-) -> tuple[_ElementTree[_Element], _IDDict[_Element]]: ...
+) -> tuple[ElementTree[Element], _IDDict[Element]]: ...
 
 class _IDDict(Collection[str], Generic[_ET]):
     """Dictionary-like proxy class that mapps ID attributes to elements

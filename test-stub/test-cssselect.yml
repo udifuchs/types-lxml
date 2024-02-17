@@ -13,16 +13,16 @@
 
 - case: evaluation_of_selector
   parametrized:
-    - input_type: _Element
-      rt: '[\w\.]+\._Element'
-    - input_type: "_ElementTree[_Element]"
-      rt: '[\w\.]+\._Element'
+    - input_type: Element
+      rt: '[\w\.]+\.Element'
+    - input_type: "ElementTree[Element]"
+      rt: '[\w\.]+\.Element'
     - input_type: HtmlElement
       rt: '[\w\.]+\.HtmlElement'
-    - input_type: "_ElementTree[HtmlElement]"
+    - input_type: "ElementTree[HtmlElement]"
       rt: '[\w\.]+\.HtmlElement'
   main: |
-    from lxml.etree import _Element, _ElementTree
+    from lxml.etree import Element, ElementTree
     from lxml.html import HtmlElement
     from lxml.cssselect import CSSSelector
     sel: CSSSelector
@@ -32,12 +32,12 @@
 - case: etree_cssselect_method
   main: |
     from lxml import etree
-    root: etree._Element
+    root: etree.Element
     expr: str
     result = root.cssselect(expr)
-    reveal_type(result)  # NR: .+ "[\w\.]+\.list[[\w\.]+\._Element]"$
+    reveal_type(result)  # NR: .+ "[\w\.]+\.list[[\w\.]+\.Element]"$
     result = root.cssselect('tag', translator='xml')
-    reveal_type(result)  # NR: .+ "[\w\.]+\.list[[\w\.]+\._Element]"$
+    reveal_type(result)  # NR: .+ "[\w\.]+\.list[[\w\.]+\.Element]"$
 
 - case: etree_cssselect_bad_arg1
   parametrized:
@@ -47,17 +47,17 @@
     wrong_type: int
   main: |
     from lxml import etree
-    root: etree._Element
+    root: etree.Element
     expr1: bytes
     expr2: int
-    result = root.cssselect({{ args }})  # E: Argument 1 to "cssselect" of "_Element" has incompatible type "{{ wrong_type }}"; expected "str"  [arg-type]
+    result = root.cssselect({{ args }})  # E: Argument 1 to "cssselect" of "Element" has incompatible type "{{ wrong_type }}"; expected "str"  [arg-type]
 
 - case: etree_cssselect_bad_arg2
   main: |
     from lxml import etree
-    root: etree._Element
-    result = root.cssselect('tag', 'xml')  # E: Too many positional arguments for "cssselect" of "_Element"  [misc]
-    result = root.cssselect('tag', translator='junk')  # ER: Argument "translator" to "cssselect" of "_Element" has incompatible type "Literal\['junk'\]"; expected "Literal\[.+\] \| LxmlTranslator"  \[arg-type\]
+    root: etree.Element
+    result = root.cssselect('tag', 'xml')  # E: Too many positional arguments for "cssselect" of "Element"  [misc]
+    result = root.cssselect('tag', translator='junk')  # ER: Argument "translator" to "cssselect" of "Element" has incompatible type "Literal\['junk'\]"; expected "Literal\[.+\] \| LxmlTranslator"  \[arg-type\]
 
 - case: html_cssselect_method
   parametrized:

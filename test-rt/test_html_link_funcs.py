@@ -5,7 +5,7 @@ from typing import Any, Callable, Sequence, cast
 
 import _testutils
 import pytest
-from lxml.etree import _ElementTree
+from lxml.etree import ElementTree
 from lxml.html import (
     HtmlElement,
     find_class,
@@ -26,7 +26,7 @@ class TestInputType:
     def test_bad_input_without_copy(
         self,
         h1_filepath: Path,
-        html_tree: _ElementTree[HtmlElement],
+        html_tree: ElementTree[HtmlElement],
     ) -> None:
         buffer = open(h1_filepath, "rb")
         for bad_input in (h1_filepath, buffer, html_tree):
@@ -47,7 +47,7 @@ class TestInputType:
     def test_bad_input_with_copy(
         self,
         h1_filepath: Path,
-        html_tree: _ElementTree[HtmlElement],
+        html_tree: ElementTree[HtmlElement],
     ) -> None:
         for bad_input in (h1_filepath, html_tree):
             with pytest.raises(
@@ -68,7 +68,7 @@ class TestInputType:
         h1_filepath: Path,
         h1_str: str,
         h1_bytes: bytes,
-        html_tree: _ElementTree[HtmlElement],
+        html_tree: ElementTree[HtmlElement],
     ) -> None:
         links = find_rel_links(str(h1_filepath), "nofollow noopener noreferrer")
         reveal_type(links)
@@ -89,7 +89,7 @@ class TestInputType:
         h1_filepath: Path,
         h1_str: str,
         h1_bytes: bytes,
-        html_tree: _ElementTree[HtmlElement],
+        html_tree: ElementTree[HtmlElement],
     ) -> None:
         elems = find_class(str(h1_filepath), "single")
         reveal_type(elems)
@@ -110,7 +110,7 @@ class TestInputType:
         h1_filepath: Path,
         h1_str: str,
         h1_bytes: bytes,
-        html_tree: _ElementTree[HtmlElement],
+        html_tree: ElementTree[HtmlElement],
     ) -> None:
         results = iterlinks(str(h1_filepath))
         reveal_type(results)
@@ -239,7 +239,7 @@ class TestBadArgs:
         h1_str: str,
         h1_bytes: bytes,
         h1_filepath: Path,
-        html_tree: _ElementTree[HtmlElement],
+        html_tree: ElementTree[HtmlElement],
     ) -> None:
         for input in (h1_str, h1_bytes, str(h1_filepath)):
             with pytest.raises(
@@ -264,7 +264,7 @@ class TestOutputType:
         self,
         h1_str: str,
         h1_bytes: bytes,
-        html_tree: _ElementTree[HtmlElement],
+        html_tree: ElementTree[HtmlElement],
     ) -> None:
         with pytest.raises(
             TypeError, match="No base_url given, and the document has no base_url"
@@ -286,7 +286,7 @@ class TestOutputType:
         self,
         h1_str: str,
         h1_bytes: bytes,
-        html_tree: _ElementTree[HtmlElement],
+        html_tree: ElementTree[HtmlElement],
     ) -> None:
         result = resolve_base_href(h1_bytes)
         reveal_type(result)
@@ -302,7 +302,7 @@ class TestOutputType:
         self,
         h1_str: str,
         h1_bytes: bytes,
-        html_tree: _ElementTree[HtmlElement],
+        html_tree: ElementTree[HtmlElement],
     ) -> None:
         result = rewrite_links(h1_bytes, lambda _: _BASE_HREF)
         reveal_type(result)

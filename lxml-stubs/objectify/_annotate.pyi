@@ -105,7 +105,7 @@ def pyannotate(
 
     Parameters
     ----------
-    element_or_tree: `_Element` or `_ElementTree`
+    element_or_tree: `Element` or `ElementTree`
         The XML Element or XML Tree to be precessed
     ignore_old: bool, optional
         If True, current `py:pytype` attributes will always be replaced.
@@ -136,7 +136,7 @@ def xsiannotate(
 
     Parameters
     ----------
-    element_or_tree: `_Element` or `_ElementTree`
+    element_or_tree: `Element` or `ElementTree`
         The XML Element or XML Tree to be precessed
     ignore_old: bool, optional
         If True, current `xsi:type` attributes will always be replaced.
@@ -176,7 +176,7 @@ def annotate(
 
     Parameters
     ----------
-    element_or_tree: `_Element` or `_ElementTree`
+    element_or_tree: `Element` or `ElementTree`
         The XML Element or XML Tree to be precessed
     ignore_old: bool, optional
         If True, current `py:pytype` attributes will always be replaced.
@@ -215,7 +215,7 @@ def deannotate(
 
     Parameters
     ----------
-    element_or_tree: `_Element` or `_ElementTree`
+    element_or_tree: `Element` or `ElementTree`
         The XML Element or XML Tree to be precessed
     pytype: bool, optional
         Whether `py:pytype` attributes should be removed, default is True

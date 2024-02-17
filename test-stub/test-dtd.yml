@@ -43,13 +43,13 @@
   files: &INC
     - path: dtdtest.py
       content: |
-        from lxml.etree import DTD, _Element, _ElementTree
+        from lxml.etree import DTD, Element, ElementTree
         dtd: DTD
         dtd_el   = dtd.elements()[0]
         dtd_ent  = dtd.entities()[0]
         dtd_attr = dtd_el.attributes()[0]
-        root: _Element
-        tree: _ElementTree[_Element]
+        root: Element
+        tree: ElementTree[Element]
   main:
 
 - case: dtd_properties

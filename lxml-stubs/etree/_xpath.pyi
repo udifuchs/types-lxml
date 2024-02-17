@@ -16,7 +16,7 @@ from .._types import (
     _XPathObject,
     _XPathVarArg,
 )
-from ._element import _Element, _ElementTree
+from ._element import Element, ElementTree
 from ._module_misc import LxmlError, LxmlSyntaxError
 from ._xmlerror import _ListErrorLog
 
@@ -76,7 +76,7 @@ class ETXPath(XPath):
 class XPathElementEvaluator(_XPathEvaluatorBase):
     def __init__(
         self,
-        element: _Element,
+        element: Element,
         *,
         namespaces: _NonDefaultNSMapArg | None = ...,
         extensions: _XPathExtFuncArg | None = ...,
@@ -92,7 +92,7 @@ class XPathElementEvaluator(_XPathEvaluatorBase):
 class XPathDocumentEvaluator(XPathElementEvaluator):
     def __init__(
         self,
-        etree: _ElementTree[_Element],
+        etree: ElementTree[Element],
         *,
         namespaces: _NonDefaultNSMapArg | None = ...,
         extensions: _XPathExtFuncArg | None = ...,
@@ -102,7 +102,7 @@ class XPathDocumentEvaluator(XPathElementEvaluator):
 
 @overload
 def XPathEvaluator(
-    etree_or_element: _Element,
+    etree_or_element: Element,
     *,
     namespaces: _NonDefaultNSMapArg | None = ...,
     extensions: _XPathExtFuncArg | None = ...,
@@ -111,7 +111,7 @@ def XPathEvaluator(
 ) -> XPathElementEvaluator: ...
 @overload
 def XPathEvaluator(
-    etree_or_element: _ElementTree[_Element],
+    etree_or_element: ElementTree[Element],
     *,
     namespaces: _NonDefaultNSMapArg | None = ...,
     extensions: _XPathExtFuncArg | None = ...,

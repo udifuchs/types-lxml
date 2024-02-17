@@ -6,7 +6,7 @@
 import html5lib as _html5lib
 
 from .._types import _AnyStr
-from ..etree import _Element, _ElementTree
+from ..etree import Element, ElementTree
 
 # Note that tree arg is dropped, because the sole purpose of using
 # this parser is to generate lxml element tree with html5lib parser.
@@ -33,26 +33,26 @@ html_parser: HTMLParser
 
 def document_fromstring(
     html: _AnyStr, guess_charset: bool | None = ..., parser: HTMLParser | None = ...
-) -> _Element: ...
+) -> Element: ...
 def fragments_fromstring(
     html: _AnyStr,
     no_leading_text: bool = ...,
     guess_charset: bool | None = ...,
     parser: HTMLParser | None = ...,
-) -> list[_Element]: ...
+) -> list[Element]: ...
 def fragment_fromstring(
     html: _AnyStr,
     create_parent: bool | _AnyStr = ...,
     guess_charset: bool | None = ...,
     parser: HTMLParser | None = ...,
-) -> _Element: ...
+) -> Element: ...
 def fromstring(
     html: _AnyStr,
     guess_charset: bool | None = ...,
     parser: HTMLParser | None = ...,
-) -> _Element: ...
+) -> Element: ...
 def parse(
     filename_url_or_file: _AnyStr,
     guess_charset: bool | None = ...,
     parser: HTMLParser | None = ...,
-) -> _ElementTree[_Element]: ...
+) -> ElementTree[Element]: ...

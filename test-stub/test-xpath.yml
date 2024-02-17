@@ -98,7 +98,7 @@
     from lxml import etree
     s: str
     xpath: {{ cls }}
-    root: etree._Element
+    root: etree.Element
     result = xpath(root)
     reveal_type(result)  # N: Revealed type is "Any"
 
@@ -110,8 +110,8 @@
       arg: tree
   main: |
     from lxml import etree
-    root: etree._Element
-    tree: etree._ElementTree[etree._Element]
+    root: etree.Element
+    tree: etree.ElementTree[etree.Element]
     evaluator = etree.{{ ev_type }}({{ arg }})
     reveal_type(evaluator)  # N: Revealed type is "lxml.etree._xpath.{{ ev_type }}"
 
@@ -119,24 +119,24 @@
   parametrized:
     - evaluator_t: XPathElementEvaluator
       arg: tree
-      wrong_t: "_ElementTree[_Element]"
-      expect_t: _Element
+      wrong_t: "ElementTree[Element]"
+      expect_t: Element
     - evaluator_t: XPathDocumentEvaluator
       arg: root
-      wrong_t: _Element
-      expect_t: "_ElementTree[_Element]"
+      wrong_t: Element
+      expect_t: "ElementTree[Element]"
     - evaluator_t: XPathElementEvaluator
       arg: 1
       wrong_t: int
-      expect_t: "_Element"
+      expect_t: "Element"
     - evaluator_t: XPathDocumentEvaluator
       arg: 1
       wrong_t: int
-      expect_t: "_ElementTree[_Element]"
+      expect_t: "ElementTree[Element]"
   main: |
     from lxml import etree
-    root: etree._Element
-    tree: etree._ElementTree[etree._Element]
+    root: etree.Element
+    tree: etree.ElementTree[etree.Element]
     _ = etree.{{ evaluator_t }}({{ arg }})  # E: Argument 1 to "{{ evaluator_t }}" has incompatible type "{{ wrong_t }}"; expected "{{ expect_t }}"  [arg-type]
 
 - case: create_evaluator_autodetect
@@ -147,8 +147,8 @@
       rt: lxml.etree._xpath.XPathDocumentEvaluator
   main: |
     from lxml import etree
-    root: etree._Element
-    tree: etree._ElementTree[etree._Element]
+    root: etree.Element
+    tree: etree.ElementTree[etree.Element]
     evaluator = etree.XPathEvaluator({{ arg }})
     reveal_type(evaluator)  # N: Revealed type is "{{ rt }}"
 

@@ -13,7 +13,7 @@ from typing import (
 )
 from typing_extensions import TypeAlias
 
-from .etree import QName, _Element, _ElementTree
+from .etree import QName, Element, ElementTree
 
 # Dup but deviate from recent _typeshed
 Unused: TypeAlias = Any
@@ -85,8 +85,8 @@ _XPathVarArg = (
     | float
     | str
     | bytes
-    | _Element
-    | list[_Element]
+    | Element
+    | list[Element]
 )
 # fmt: on
 
@@ -127,8 +127,10 @@ _SaxEventNames = Literal[
     "pi",
 ]
 
-_ET = TypeVar("_ET", bound=_Element)
-_ET_co = TypeVar("_ET_co", bound=_Element, covariant=True)
+_ET = TypeVar("_ET", bound=Element)
+_ET_co = TypeVar("_ET_co", bound=Element, covariant=True)
+_ETT = TypeVar("_ETT", bound=ElementTree[Element])
+_ETT_co = TypeVar("_ETT_co", bound=ElementTree[Element], covariant=True)
 
 # Generic element factory function type. Because arguments are
 # mostly optional, accurate typing can't be done.
@@ -138,9 +140,9 @@ _ElemFactory: TypeAlias = Callable[..., _ET]
 # but checks for exact element *factory functions* instead
 # (etree.Element() and friends). Python typing system doesn't
 # support such outlandish usage. Use a generic callable instead.
-_TagSelector: TypeAlias = _TagName | _ElemFactory[_Element]
+_TagSelector: TypeAlias = _TagName | _ElemFactory[Element]
 
-_ElementOrTree: TypeAlias = _Element | _ElementTree[_Element]
+_ElementOrTree: TypeAlias = Element | ElementTree[Element]
 
 class SupportsLaxedItems(Protocol[_KT_co, _VT_co]):
     """Relaxed form of SupportsItems

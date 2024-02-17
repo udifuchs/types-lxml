@@ -8,7 +8,7 @@ from typing_extensions import TypeAlias, TypedDict, deprecated
 
 from .._types import SupportsLaxedItems, _AnyStr, _ElementOrTree, _FileWriteSource
 from ._classlookup import PIBase
-from ._element import _Element, _ElementTree
+from ._element import Element, ElementTree
 from ._module_misc import LxmlError
 from ._parser import _DefEtreeParsers
 from ._serializer import SerialisationError
@@ -37,7 +37,7 @@ class XSLTExtensionError(XSLTError):
     """Error registering an XSLT extension"""
 
 @final
-class _XSLTResultTree(_ElementTree[_Element]):
+class _XSLTResultTree(ElementTree[Element]):
     """The result of an XSLT evaluation"""
 
     def write_output(self, file: _FileWriteSource, *, compression: int = ...) -> None:
@@ -47,7 +47,7 @@ class _XSLTResultTree(_ElementTree[_Element]):
         the result as defined by the ``<xsl:output>`` tag.
         """
     @property
-    def xslt_profile(self) -> _ElementTree[_Element] | None:
+    def xslt_profile(self) -> ElementTree[Element] | None:
         """Return an ElementTree with profiling data for the stylesheet run"""
 
 @final
@@ -159,16 +159,16 @@ class XSLT:
     @deprecated("Since v2.0 (2008); use str(result_tree) instead")
     def tostring(
         self,
-        result_tree: _ElementTree[_Element],
+        result_tree: ElementTree[Element],
     ) -> str: ...
 
 class _XSLTProcessingInstruction(PIBase):
     def parseXSL(
-        self, parser: _DefEtreeParsers[_Element] | None = ...
-    ) -> _ElementTree[_Element]: ...
+        self, parser: _DefEtreeParsers[Element] | None = ...
+    ) -> ElementTree[Element]: ...
     def set(self, key: Literal["href"], value: str) -> None: ...  # type: ignore[override]
 
-# Nodes are usually some opaque or read-only wrapper of _Element.
+# Nodes are usually some opaque or read-only wrapper of Element.
 # They provide access of varying attributes depending on node type,
 # which are not known to static typing. So use typing.Any here
 # to not prevent their access.
@@ -181,7 +181,7 @@ class XSLTExtension(metaclass=abc.ABCMeta):
         context: Any,  # _XSLTContext,
         self_node: Any,
         input_node: Any,
-        output_parent: _Element | None,
+        output_parent: Element | None,
     ) -> None:
         """Execute this extension element
 
@@ -202,7 +202,7 @@ class XSLTExtension(metaclass=abc.ABCMeta):
         self,
         context: Any,  # _XSLTContext,
         node: Any,
-        output_parent: _Element,
+        output_parent: Element,
         *,
         elements_only: bool = ...,
         remove_blank_text: bool = ...,
@@ -216,7 +216,7 @@ class XSLTExtension(metaclass=abc.ABCMeta):
         *,
         elements_only: Literal[True],
         remove_blank_text: bool = ...,
-    ) -> list[_Element]: ...
+    ) -> list[Element]: ...
     @overload
     def apply_templates(
         self,
@@ -226,7 +226,7 @@ class XSLTExtension(metaclass=abc.ABCMeta):
         *,
         elements_only: Literal[False] = ...,
         remove_blank_text: bool = ...,
-    ) -> list[str | _Element]:
+    ) -> list[str | Element]:
         """Call this method to retrieve the result of applying templates
         to an element
 
@@ -251,7 +251,7 @@ class XSLTExtension(metaclass=abc.ABCMeta):
     def process_children(
         self,
         context: Any,  # _XSLTContext,
-        output_parent: _Element,
+        output_parent: Element,
         *,
         elements_only: bool = ...,
         remove_blank_text: bool = ...,
@@ -264,7 +264,7 @@ class XSLTExtension(metaclass=abc.ABCMeta):
         *,
         elements_only: Literal[True],
         remove_blank_text: bool = ...,
-    ) -> list[_Element]: ...
+    ) -> list[Element]: ...
     @overload
     def process_children(
         self,
@@ -273,7 +273,7 @@ class XSLTExtension(metaclass=abc.ABCMeta):
         *,
         elements_only: Literal[False] = ...,
         remove_blank_text: bool = ...,
-    ) -> list[str | _Element]:
+    ) -> list[str | Element]:
         """Call this method to process the XSLT content of the extension
         element itself.
 

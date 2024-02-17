@@ -4,21 +4,21 @@ from pathlib import Path
 
 import _testutils
 import pytest
-from lxml.etree import _Element, _ElementTree, iterparse, iterwalk
+from lxml.etree import Element, ElementTree, iterparse, iterwalk
 from lxml.html import HtmlElement
 
 reveal_type = getattr(_testutils, "reveal_type_wrapper")
 
 
 class TestIterwalk:
-    def test_xml_default_event(self, xml_tree: _ElementTree[_Element]) -> None:
+    def test_xml_default_event(self, xml_tree: ElementTree[Element]) -> None:
         walker = iterwalk(xml_tree)
         reveal_type(walker)
         for event, elem in walker:
             reveal_type(event)
             reveal_type(elem)
 
-    def test_xml_more_event(self, xml_tree: _ElementTree[_Element]) -> None:
+    def test_xml_more_event(self, xml_tree: ElementTree[Element]) -> None:
         walker = iterwalk(xml_tree, ["start", "end", "start-ns", "end-ns", "comment"])
         reveal_type(walker)
         # Generated values are not unpacked here to test type narrowing
@@ -31,14 +31,14 @@ class TestIterwalk:
             else:
                 reveal_type(item[1])
 
-    def test_html_default_event(self, html_tree: _ElementTree[HtmlElement]) -> None:
+    def test_html_default_event(self, html_tree: ElementTree[HtmlElement]) -> None:
         walker = iterwalk(html_tree, tag=("div", "span"))
         reveal_type(walker)
         for event, elem in walker:
             reveal_type(event)
             reveal_type(elem)
 
-    def test_html_more_event(self, html_tree: _ElementTree[HtmlElement]) -> None:
+    def test_html_more_event(self, html_tree: ElementTree[HtmlElement]) -> None:
         # Since HtmlComment is pretended as HtmlElement subclass
         # in stub but not runtime, adding 'comment' event would fail
         walker = iterwalk(html_tree, ("start", "end", "start-ns", "end-ns"), "div")

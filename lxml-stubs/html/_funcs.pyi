@@ -6,7 +6,7 @@ from .._types import _AnyStr, _KnownEncodings, _OutputMethodArg
 from ._element import _HANDLE_FAILURES, HtmlElement
 
 _HtmlDoc_T = TypeVar("_HtmlDoc_T", str, bytes, HtmlElement)
-_HtmlElemOrTree: TypeAlias = HtmlElement | etree._ElementTree[HtmlElement]
+_HtmlElemOrTree: TypeAlias = HtmlElement | etree.ElementTree[HtmlElement]
 
 # These are HtmlMixin methods converted to standard functions,
 # with element or HTML string as first argument followed by all

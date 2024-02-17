@@ -4,7 +4,7 @@
     from lxml import etree
     s: str
     xml_tree = etree.parse(s)
-    reveal_type(xml_tree)  # NR: .+ "[\w\.]+\._ElementTree\[[\w\.]+\._Element]"$
+    reveal_type(xml_tree)  # NR: .+ "[\w\.]+\.ElementTree\[[\w\.]+\.Element]"$
     xsl_tree = etree.parse(s)
     access = etree.XSLTAccessControl(
       read_network=False, write_network=False)
@@ -18,7 +18,7 @@
 - case: repeat_processing
   main: |
     from lxml import etree
-    result1: etree._ElementTree[etree._Element]
+    result1: etree.ElementTree[etree.Element]
     tr: etree.XSLT
     result2 = tr(result1)
     result3 = tr(result2)

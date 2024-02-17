@@ -9,8 +9,8 @@ import pytest
 # import pytest
 from lxml.etree import (
     XInclude,
-    _Element as _Element,
-    _ElementTree as _ElementTree,
+    Element as Element,
+    ElementTree as ElementTree,
     _ListErrorLog as _ListErrorLog,
     fromstring,
 )

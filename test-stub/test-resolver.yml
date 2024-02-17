@@ -49,11 +49,11 @@
       args: '()'
       rt: '[\w\.]+\._ResolverRegistry'
   main: |
-    from lxml.etree import XMLParser, _Element
+    from lxml.etree import XMLParser, Element
     from myresolvers import DTDResolver, PrefixResolver
     d_resv: DTDResolver
     p_resv: PrefixResolver
-    p: XMLParser[_Element]
+    p: XMLParser[Element]
     {{#rt}}result = {{/rt}}p.resolvers.{{method}}{{args}}
     {{#rt}}reveal_type(result)  # NR: Revealed type is "{{rt}}"{{/rt}}
 
@@ -85,10 +85,10 @@
       rt: true
       errtype: 'attr-defined'
   main: |
-    from lxml.etree import XMLParser, _Element
+    from lxml.etree import XMLParser, Element
     from myresolvers import DTDResolver, PrefixResolver
     d_resv: DTDResolver
     p_resv: PrefixResolver
     s: str
-    p: XMLParser[_Element]
+    p: XMLParser[Element]
     {{#rt}}result = {{/rt}}p.resolvers.{{method}}{{args}}  # ER: .+ \[{{errtype}}]$

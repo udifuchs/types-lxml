@@ -4,7 +4,7 @@
     - path: inc.py
       content: |
         from lxml import etree as e
-        el: e._Element
+        el: e.Element
         comm: e._Comment
         ent: e._Entity
         pi_: e._ProcessingInstruction
@@ -22,10 +22,10 @@
     from inc import el
     reveal_type(el.index(el))  # NR: .+ "[\w\.]+\.int"$
     reveal_type(len(el))  # NR: .+ "[\w\.]+\.int"$
-    reveal_type(el[3])  # NR: .+ "[\w\.]+\._Element"$
-    reveal_type(el[:2])  # NR: .+ "[\w\.]+\.list\[[\w\.]+\._Element]"$
-    reveal_type(iter(el))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(reversed(el))  # NR: .+ "[\w\.]+\.reversed\[[\w\.]+\._Element]"$
+    reveal_type(el[3])  # NR: .+ "[\w\.]+\.Element"$
+    reveal_type(el[:2])  # NR: .+ "[\w\.]+\.list\[[\w\.]+\.Element]"$
+    reveal_type(iter(el))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(reversed(el))  # NR: .+ "[\w\.]+\.reversed\[[\w\.]+\.Element]"$
     if el in el:
       del el[1]
       del el[2:4]
@@ -75,12 +75,12 @@
 - case: behave_like_mutable_sequence_badarg_2
   main: |
     from lxml import etree
-    elem: etree._Element
+    elem: etree.Element
     not_elem: object
-    elem.extend([not_elem])  # E: List item 0 has incompatible type "object"; expected "_Element"  [list-item]
-    elem.extend(elem, elem)  # E: Too many arguments for "extend" of "_Element"  [call-arg]
-    elem.clear(True, False)  # E: Too many arguments for "clear" of "_Element"  [call-arg]
-    elem.clear(badarg=True)  # E: Unexpected keyword argument "badarg" for "clear" of "_Element"  [call-arg]
+    elem.extend([not_elem])  # E: List item 0 has incompatible type "object"; expected "Element"  [list-item]
+    elem.extend(elem, elem)  # E: Too many arguments for "extend" of "Element"  [call-arg]
+    elem.clear(True, False)  # E: Too many arguments for "clear" of "Element"  [call-arg]
+    elem.clear(badarg=True)  # E: Unexpected keyword argument "badarg" for "clear" of "Element"  [call-arg]
   out: |
 
 - case: method_setitem
@@ -95,8 +95,8 @@
       val: "{elem, another}"
   main: |
     from lxml import etree
-    elem: etree._Element
-    another: etree._Element
+    elem: etree.Element
+    another: etree.Element
     obj: object
     elem[{{ idx }}] = {{ val }}
 
@@ -111,7 +111,7 @@
       val: "(elem, obj)"
   main: |
     from lxml import etree
-    elem: etree._Element
+    elem: etree.Element
     obj: object
     elem[{{ idx }}] = {{ val }}
 
@@ -127,9 +127,9 @@
       rt: 'Union\[[\w\.]+\.int, None]'
   main: |
     from lxml import etree
-    elem: etree._Element
+    elem: etree.Element
     reveal_type(elem.{{ prop }})  # NR: .+ "{{ rt }}"$
-    elem.{{ prop }} = elem.{{ prop }}  # E: Property "{{ prop }}" defined in "_Element" is read-only  [misc]
+    elem.{{ prop }} = elem.{{ prop }}  # E: Property "{{ prop }}" defined in "Element" is read-only  [misc]
 
 # XXX See test case mypy_3004_element_prop
 - case: rw_properties
@@ -197,31 +197,31 @@
     - method: addprevious
   main: |
     from lxml import etree
-    elem: etree._Element
+    elem: etree.Element
     elem.{{ method }}(elem)
-    elem.{{ method }}(1)  # E: Argument 1 to "{{ method }}" of "_Element" has incompatible type "int"; expected "_Element"  [arg-type]
-    elem.{{ method }}(elem, 1)  # E: Too many arguments for "{{ method }}" of "_Element"  [call-arg]
+    elem.{{ method }}(1)  # E: Argument 1 to "{{ method }}" of "Element" has incompatible type "int"; expected "Element"  [arg-type]
+    elem.{{ method }}(elem, 1)  # E: Too many arguments for "{{ method }}" of "Element"  [call-arg]
 
 - case: elementpath_goodargs
   files: *INC
   main: |
     from inc import s, qn, el
     nsmap = {None: s, s: s}
-    reveal_type(el.find(s       ))  # NR: .+ "Union\[[\w\.]+\._Element, None]"$
-    reveal_type(el.find(qn      ))  # NR: .+ "Union\[[\w\.]+\._Element, None]"$
-    reveal_type(el.find(path=s  ))  # NR: .+ "Union\[[\w\.]+\._Element, None]"$
-    reveal_type(el.find(s, nsmap))  # NR: .+ "Union\[[\w\.]+\._Element, None]"$
-    reveal_type(el.find(qn, namespaces=nsmap))  # NR: .+ "Union\[[\w\.]+\._Element, None]"$
-    reveal_type(el.findall(s       ))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\._Element]"$
-    reveal_type(el.findall(qn      ))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\._Element]"$
-    reveal_type(el.findall(path=s  ))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\._Element]"$
-    reveal_type(el.findall(s, nsmap))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\._Element]"$
-    reveal_type(el.findall(qn, namespaces=nsmap))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\._Element]"$
-    reveal_type(el.iterfind(s       ))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(el.iterfind(qn      ))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(el.iterfind(path=s  ))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(el.iterfind(s, nsmap))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(el.iterfind(qn, namespaces=nsmap))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
+    reveal_type(el.find(s       ))  # NR: .+ "Union\[[\w\.]+\.Element, None]"$
+    reveal_type(el.find(qn      ))  # NR: .+ "Union\[[\w\.]+\.Element, None]"$
+    reveal_type(el.find(path=s  ))  # NR: .+ "Union\[[\w\.]+\.Element, None]"$
+    reveal_type(el.find(s, nsmap))  # NR: .+ "Union\[[\w\.]+\.Element, None]"$
+    reveal_type(el.find(qn, namespaces=nsmap))  # NR: .+ "Union\[[\w\.]+\.Element, None]"$
+    reveal_type(el.findall(s       ))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\.Element]"$
+    reveal_type(el.findall(qn      ))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\.Element]"$
+    reveal_type(el.findall(path=s  ))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\.Element]"$
+    reveal_type(el.findall(s, nsmap))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\.Element]"$
+    reveal_type(el.findall(qn, namespaces=nsmap))  # NR: .+ "[\w\.]+\.list\[[\w\.]+\.Element]"$
+    reveal_type(el.iterfind(s       ))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(el.iterfind(qn      ))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(el.iterfind(path=s  ))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(el.iterfind(s, nsmap))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(el.iterfind(qn, namespaces=nsmap))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
 
 - case: elementpath_badargs
   files: *INC
@@ -273,11 +273,11 @@
   main: |
     from inc import el, s, b, qn
     from lxml import etree
-    reveal_type(el.iter           ())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(el.iterancestors  ())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(el.iterchildren   ())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(el.iterdescendants())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(el.itersiblings   ())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
+    reveal_type(el.iter           ())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(el.iterancestors  ())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(el.iterchildren   ())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(el.iterdescendants())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(el.itersiblings   ())  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
     el.iter           (s)
     el.iter           (etree.Comment, b)
     el.iterancestors  (b)
@@ -324,7 +324,7 @@
       args: badarg=tag
   main: |
     from lxml import etree
-    elem: etree._Element
+    elem: etree.Element
     tag: str
     _ = elem.{{ method }}({{ args }})
 
@@ -332,8 +332,8 @@
   files: *INC
   main: |
     from inc import el, s, b, qn
-    reveal_type(el.itersiblings(s, qn, preceding=True))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
-    reveal_type(el.iterchildren(qn, b, reversed=True))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
+    reveal_type(el.itersiblings(s, qn, preceding=True))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
+    reveal_type(el.iterchildren(qn, b, reversed=True))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
 
 - case: iter_family_special_kwd_badargs
   files: *INC
@@ -379,7 +379,7 @@
     crazy_nsmap: Dict[str | None, str | bytes]
     nsmap = {None: s, s: s}
     myattrib = {s: s}
-    reveal_type(el.makeelement(s))  # NR: .+ "[\w\.]+\._Element"
+    reveal_type(el.makeelement(s))  # NR: .+ "[\w\.]+\.Element"
     el.makeelement(b, el.attrib)
     el.makeelement(qn, myattrib)
     el.makeelement(s, None, crazy_nsmap)
@@ -403,10 +403,10 @@
   files: *INC
   main: |
     from inc import el, s
-    reveal_type(el.getparent  ())  # NR: .+ "Union\[[\w\.]+\._Element, None]"$
-    reveal_type(el.getnext    ())  # NR: .+ "Union\[[\w\.]+\._Element, None]"$
-    reveal_type(el.getprevious())  # NR: .+ "Union\[[\w\.]+\._Element, None]"$
-    reveal_type(el.getroottree())  # NR: .+ "[\w\.]+\._ElementTree\[[\w\.]+\._Element]"$
+    reveal_type(el.getparent  ())  # NR: .+ "Union\[[\w\.]+\.Element, None]"$
+    reveal_type(el.getnext    ())  # NR: .+ "Union\[[\w\.]+\.Element, None]"$
+    reveal_type(el.getprevious())  # NR: .+ "Union\[[\w\.]+\.Element, None]"$
+    reveal_type(el.getroottree())  # NR: .+ "[\w\.]+\.ElementTree\[[\w\.]+\.Element]"$
     el.getparent  (s)  # ER: Too many arguments .+  \[call-arg]$
     el.getnext    (s)  # ER: Too many arguments .+  \[call-arg]$
     el.getprevious(s)  # ER: Too many arguments .+  \[call-arg]$

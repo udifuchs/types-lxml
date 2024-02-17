@@ -26,7 +26,7 @@
     fileio = open('file', 'r')
     filename: str
     result = parse({{ args }})
-    reveal_type(result)  # NR: Revealed type is "[\w\.]+\._ElementTree\[[\w\.]+\.HtmlElement]"
+    reveal_type(result)  # NR: Revealed type is "[\w\.]+\.ElementTree\[[\w\.]+\.HtmlElement]"
 
 - case: convert_tree
   main: |
@@ -51,16 +51,16 @@
     - func: fromstring
       args: 1
     - func: fromstring
-      args: fileio, _Element
+      args: fileio, Element
     - func: parse
       args: 1
     - func: parse
-      args: fileio, _Element
+      args: fileio, Element
     - func: convert_tree
       args: fileio
   main: |
     from lxml.html import soupparser as sp
-    from lxml.etree import _Element
+    from lxml.etree import Element
     from bs4 import BeautifulSoup
     from io import StringIO
     fileio: StringIO

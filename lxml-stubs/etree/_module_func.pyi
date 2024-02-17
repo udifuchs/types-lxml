@@ -10,7 +10,7 @@ from .._types import (
     _KnownEncodings,
     _OutputMethodArg,
 )
-from ._element import _Element, _ElementTree
+from ._element import Element, ElementTree
 from ._parser import HTMLParser, XMLParser, _DefEtreeParsers
 
 @overload
@@ -26,7 +26,7 @@ def HTML(
     parser: None = ...,
     *,
     base_url: _AnyStr | None = ...,
-) -> _Element: ...
+) -> Element: ...
 @overload
 def XML(
     text: _AnyStr,
@@ -40,21 +40,21 @@ def XML(
     parser: None = ...,
     *,
     base_url: _AnyStr | None = ...,
-) -> _Element: ...
+) -> Element: ...
 @overload
 def parse(
     source: _FileReadSource,
     parser: _DefEtreeParsers[_ET_co],
     *,
     base_url: _AnyStr | None = ...,
-) -> _ElementTree[_ET_co]: ...
+) -> ElementTree[_ET_co]: ...
 @overload
 def parse(
     source: _FileReadSource,
     parser: None = ...,
     *,
     base_url: _AnyStr | None = ...,
-) -> _ElementTree[_Element]: ...
+) -> ElementTree[Element]: ...
 @overload
 def fromstring(
     text: _AnyStr,
@@ -68,7 +68,7 @@ def fromstring(
     parser: None = ...,
     *,
     base_url: _AnyStr | None = ...,
-) -> _Element: ...
+) -> Element: ...
 @overload
 def fromstringlist(
     strings: Iterable[_AnyStr],
@@ -78,7 +78,7 @@ def fromstringlist(
 def fromstringlist(
     strings: Iterable[_AnyStr],
     parser: None = ...,
-) -> _Element: ...
+) -> Element: ...
 @overload  # Native str, no XML declaration
 def tostring(
     element_or_tree: _ElementOrTree,
@@ -157,7 +157,7 @@ def tounicode(
     with_tail: bool = ...,
     doctype: str | None = ...,
 ) -> None: ...
-def iselement(element: object) -> TypeGuard[_Element]: ...
+def iselement(element: object) -> TypeGuard[Element]: ...
 
 # XXX PyCapsule needs annotation of ctypes.pythonapi, which has no
 # annotation support currently. Use generic object for now.
@@ -165,12 +165,12 @@ def iselement(element: object) -> TypeGuard[_Element]: ...
 def adopt_external_document(
     capsule: object,
     parser: _DefEtreeParsers[_ET],
-) -> _ElementTree[_ET]: ...
+) -> ElementTree[_ET]: ...
 @overload
 def adopt_external_document(
     capsule: object,
     parser: None = ...,
-) -> _ElementTree[_Element]:
+) -> ElementTree[Element]:
     """
     Original Docstring
     ------------------
@@ -210,7 +210,7 @@ def register_namespace(prefix: _AnyStr, uri: _AnyStr) -> None:
     removed."""
 
 # Debugging only
-def dump(elem: _Element, *, pretty_print: bool = ..., with_tail: bool = ...) -> None:
+def dump(elem: Element, *, pretty_print: bool = ..., with_tail: bool = ...) -> None:
     """Writes an element tree or element structure to sys.stdout.
     This function should be used for debugging only."""
 

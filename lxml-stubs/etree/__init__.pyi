@@ -28,16 +28,14 @@ from ._dtd import (
 from ._element import (
     _Attrib as _Attrib,
     _Comment as _Comment,
-    _Element as _Element,
-    _ElementTree as _ElementTree,
+    Element as Element,
+    ElementTree as ElementTree,
     _Entity as _Entity,
     _ProcessingInstruction as _ProcessingInstruction,
 )
 from ._factory_func import (
     PI as PI,
     Comment as Comment,
-    Element as Element,
-    ElementTree as ElementTree,
     Entity as Entity,
     ProcessingInstruction as ProcessingInstruction,
     SubElement as SubElement,

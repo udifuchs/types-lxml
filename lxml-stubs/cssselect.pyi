@@ -1,7 +1,7 @@
 from typing import Literal, overload
 
 from ._types import _ET, _NonDefaultNSMapArg, _XPathVarArg
-from .etree import XPath, _ElementTree
+from .etree import XPath, ElementTree
 
 _CSSTransArg = LxmlTranslator | Literal["xml", "html", "xhtml"]
 
@@ -47,7 +47,7 @@ class CSSSelector(XPath):
     @overload
     def __call__(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
-        _etree_or_element: _ElementTree[_ET],
+        _etree_or_element: ElementTree[_ET],
         /,
         **_variables: _XPathVarArg,
     ) -> list[_ET]: ...

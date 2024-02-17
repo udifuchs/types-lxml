@@ -8,7 +8,7 @@ from typing_extensions import LiteralString
 
 from .._types import _AnyStr, _ElementOrTree, _TagName
 from ._dtd import DTD
-from ._element import _Element
+from ._element import Element
 from ._xmlerror import _BaseErrorLog, _ListErrorLog
 
 DEBUG: int
@@ -50,7 +50,7 @@ class QName:
     @overload
     def __init__(
         self,
-        text_or_uri_or_element: _TagName | _Element,
+        text_or_uri_or_element: _TagName | Element,
         tag: _TagName | None = ...,
     ) -> None: ...
     @overload

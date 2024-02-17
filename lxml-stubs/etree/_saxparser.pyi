@@ -3,7 +3,7 @@ from abc import abstractmethod
 from typing import Mapping, Protocol
 
 from .._types import _ElemFactory
-from ._element import _Attrib, _Comment, _Element, _ProcessingInstruction
+from ._element import _Attrib, _Comment, Element, _ProcessingInstruction
 from ._parser import XMLSyntaxError, _DefEtreeParsers
 
 class XMLSyntaxAssertionError(XMLSyntaxError, AssertionError): ...
@@ -32,8 +32,8 @@ class ParserTarget(Protocol[_T_co]):
         def close(self) -> str:
             return "something"
 
-    parser = etree.HTMLParser()  # type is HTMLParser[_Element]
-    result = parser.close()  # _Element
+    parser = etree.HTMLParser()  # type is HTMLParser[Element]
+    result = parser.close()  # Element
 
     t1 = MyParserTarget()
     parser = etree.HTMLParser(target=t1)  # mypy -> HTMLParser[Any]
@@ -81,15 +81,15 @@ class ParserTarget(Protocol[_T_co]):
         system_id: str | None,
     ) -> None: ...
 
-class TreeBuilder(ParserTarget[_Element]):
+class TreeBuilder(ParserTarget[Element]):
     def __init__(
         self,
         *,
-        element_factory: _ElemFactory[_Element] | None = ...,
-        parser: _DefEtreeParsers[_Element] | None = ...,
+        element_factory: _ElemFactory[Element] | None = ...,
+        parser: _DefEtreeParsers[Element] | None = ...,
         comment_factory: _ElemFactory[_Comment] | None = ...,
         pi_factory: _ElemFactory[_ProcessingInstruction] | None = ...,
         insert_comments: bool = ...,
         insert_pis: bool = ...,
     ) -> None: ...
-    def close(self) -> _Element: ...
+    def close(self) -> Element: ...

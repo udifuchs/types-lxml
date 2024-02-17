@@ -20,7 +20,7 @@ from .._types import (
     _OutputMethodArg,
     _TagName,
 )
-from ._element import _Element
+from ._element import Element
 from ._module_misc import LxmlError
 
 class SerialisationError(LxmlError): ...
@@ -128,7 +128,7 @@ class _IncrementalFileWriter:
     def write_doctype(self, doctype: _AnyStr | None) -> None: ...
     def write(
         self,
-        *args: _AnyStr | _Element,
+        *args: _AnyStr | Element,
         with_tail: bool = ...,
         pretty_print: bool = ...,
         method: _OutputMethodArg | None = ...,
@@ -155,7 +155,7 @@ class _AsyncIncrementalFileWriter:
     async def write_doctype(self, doctype: _AnyStr | None) -> None: ...
     async def write(
         self,
-        *args: _AnyStr | _Element | None,
+        *args: _AnyStr | Element | None,
         with_tail: bool = ...,
         pretty_print: bool = ...,
         method: _OutputMethodArg | None = ...,

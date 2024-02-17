@@ -2,21 +2,21 @@
   main: |
     from lxml import etree
     document = etree.fromstring("<doc></doc>")
-    reveal_type(document)  # NR: .+ "[\w\.]+\._Element"$
+    reveal_type(document)  # NR: .+ "[\w\.]+\.Element"$
 
 - case: etree_xmlparser_makeelement
   main: |
     from lxml import etree
     parser = etree.XMLParser()
     element = parser.makeelement("foobar")
-    reveal_type(element)  # NR: .+ "[\w\.]+\._Element"$
+    reveal_type(element)  # NR: .+ "[\w\.]+\.Element"$
 
 - case: etree_htmlparser_makeelement
   main: |
     from lxml import etree
     parser = etree.HTMLParser()
     element = parser.makeelement("foobar")
-    reveal_type(element)  # NR: .+ "[\w\.]+\._Element"$
+    reveal_type(element)  # NR: .+ "[\w\.]+\.Element"$
 
 - case: etree_tostring_encoding_default_or_type
   parametrized:
@@ -26,7 +26,7 @@
       rt: builtins.str
   main: |
     from lxml import etree
-    elem: etree._Element
+    elem: etree.Element
     string = etree.tostring({{ kwd }})
     reveal_type(string)  # N: Revealed type is "{{ rt }}"
 
@@ -49,13 +49,13 @@
   main: |
     from lxml import etree
     document = etree.HTML("<doc></doc>", parser=etree.HTMLParser(), base_url="http://example.com/")
-    reveal_type(document)  # NR: .+ "[\w\.]+\._Element"$
+    reveal_type(document)  # NR: .+ "[\w\.]+\.Element"$
 
 - case: etree_XML_returns_element
   main: |
     from lxml import etree
     document = etree.XML("<doc></doc>", parser=etree.XMLParser(), base_url="http://example.com/")
-    reveal_type(document)  # NR: .+ "[\w\.]+\._Element"$
+    reveal_type(document)  # NR: .+ "[\w\.]+\.Element"$
 
 - case: qname_create_ok
   parametrized:
@@ -65,9 +65,9 @@
     - kwds: None, tagname
     - kwds: None, tag=qn
   main: |
-    from lxml.etree import QName, _Element
+    from lxml.etree import QName, Element
     tagname: str
-    el: _Element
+    el: Element
     qn: QName
     result = QName({{ kwds }})
     reveal_type(result)  # NR: .+ "[\w\.]+\.QName"$
@@ -202,11 +202,11 @@
 
 - case: smartstring_getparent
   main: |
-    from lxml.etree import _ElementUnicodeResult, _Element
+    from lxml.etree import _ElementUnicodeResult, Element
     from lxml.html import HtmlElement
-    s: _ElementUnicodeResult[_Element]
+    s: _ElementUnicodeResult[Element]
     p1 = s.getparent()
-    reveal_type(p1)  # NR: Revealed type is "Union\[[\w\.]+\._Element, None]"
+    reveal_type(p1)  # NR: Revealed type is "Union\[[\w\.]+\.Element, None]"
     h: HtmlElement
     p2 = h.text_content().getparent()
     reveal_type(p2)  # NR: Revealed type is "Union\[[\w\.]+\.HtmlElement, None]"

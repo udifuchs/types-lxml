@@ -4,7 +4,7 @@ from typing import Any
 from bs4 import BeautifulSoup
 
 from .._types import _AnyStr, _ElemFactory
-from ..etree import _ElementTree
+from ..etree import ElementTree
 from . import HtmlElement
 
 def fromstring(
@@ -18,7 +18,7 @@ def parse(
     beautifulsoup: type[BeautifulSoup] | None = ...,
     makeelement: _ElemFactory[HtmlElement] | None = ...,
     **bsargs: Any,
-) -> _ElementTree[HtmlElement]: ...
+) -> ElementTree[HtmlElement]: ...
 def convert_tree(
     beautiful_soup_tree: BeautifulSoup,
     makeelement: _ElemFactory[HtmlElement] | None = ...,

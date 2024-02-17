@@ -60,12 +60,12 @@
 
 - case: elem_nsreg_use_public_elem
   main: |
-    from lxml.etree import ElementNamespaceClassLookup, _Element
+    from lxml.etree import ElementNamespaceClassLookup, Element
     lookup: ElementNamespaceClassLookup
     uri: str
     ns = lookup.get_namespace(uri)
     @ns
-    class MyElem(_Element):  # ER: Value of type .+ cannot be ".+"  \[type-var]$
+    class MyElem(Element):  # ER: Value of type .+ cannot be ".+"  \[type-var]$
       pass
 
 - case: func_nsreg_create

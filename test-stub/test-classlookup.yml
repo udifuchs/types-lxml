@@ -91,7 +91,7 @@
     _ = ElementDefaultClassLookup()
     _ = ElementDefaultClassLookup(HtmlElement, HtmlComment)
     lookup: ElementDefaultClassLookup
-    reveal_type(lookup.element_class)  # NR: .+ "Type\[[\w\.]+\._Element]"$
+    reveal_type(lookup.element_class)  # NR: .+ "Type\[[\w\.]+\.Element]"$
     reveal_type(lookup.comment_class)  # NR: .+ "Type\[[\w\.]+\._Comment]"$
     reveal_type(lookup.pi_class)  # NR: .+ "Type\[[\w\.]+\._ProcessingInstruction]"$
     reveal_type(lookup.entity_class)  # NR: .+ "Type\[[\w\.]+\._Entity]"$
@@ -110,24 +110,24 @@
       AttributeBasedElementClassLookup,
       ParserBasedElementClassLookup,
       QName,
-      _Element,
+      Element,
     )
     from lxml.html import HtmlElement
     fallback: ParserBasedElementClassLookup
     attr: str
     qn: QName
     map1 = {'ns': HtmlElement}
-    map2 = {'ns': HtmlElement, None: _Element}
+    map2 = {'ns': HtmlElement, None: Element}
     _ = AttributeBasedElementClassLookup('attr', map1)
     _ = AttributeBasedElementClassLookup('attr', map1, fallback)
     _ = AttributeBasedElementClassLookup(attribute_name=qn, class_mapping=map2, fallback=None)
 
 - case: attr_based_lookup_badargs
   main: |
-    from lxml.etree import AttributeBasedElementClassLookup, QName, _Element
+    from lxml.etree import AttributeBasedElementClassLookup, QName, Element
     s: str
     badns = {s: s}
-    ns = {s: _Element}
+    ns = {s: Element}
     AttributeBasedElementClassLookup()  # ER: Missing positional arguments "attribute_name", "class_mapping" .+ ".+"  \[call-arg]$
     AttributeBasedElementClassLookup(s)  # ER: Missing positional argument "class_mapping" .+ ".+"  \[call-arg]$
     AttributeBasedElementClassLookup(None, ns)  # ER: Argument 1 .+; expected ".+"  \[arg-type]$

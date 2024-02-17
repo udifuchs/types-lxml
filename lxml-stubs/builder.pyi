@@ -1,9 +1,9 @@
 from typing import Any, Callable, Generic, Mapping, overload
 
 from ._types import _ElemFactory, _ET_co, _NSMapArg
-from .etree import QName, _Element
+from .etree import QName, Element
 
-_TypeMapArg = Mapping[Any, Callable[[_Element, Any], None]]
+_TypeMapArg = Mapping[Any, Callable[[Element, Any], None]]
 
 class ElementMaker(Generic[_ET_co]):
     @overload
@@ -30,11 +30,11 @@ class ElementMaker(Generic[_ET_co]):
         namespace: str | None = ...,
         nsmap: _NSMapArg | None = ...,
         makeelement: None = ...,
-    ) -> ElementMaker[_Element]: ...
+    ) -> ElementMaker[Element]: ...
     def __call__(
         self,
         tag: str | QName,  # No bytes here
-        # Although, by default, the ElementMaker only accepts _Element and types
+        # Although, by default, the ElementMaker only accepts Element and types
         # interpretable by the default typemap (that is str, CDATA and dict)
         # as children, the typemap can be expanded to make sure items of any
         # type are accepted.
@@ -47,4 +47,4 @@ class ElementMaker(Generic[_ET_co]):
     # like "class" and "for", which are common in HTML)
     def __getattr__(self, name: str) -> _ElemFactory[_ET_co]: ...
 
-E: ElementMaker[_Element]
+E: ElementMaker[Element]

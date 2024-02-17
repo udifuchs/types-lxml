@@ -15,7 +15,7 @@ from .._types import (
 )
 from ._classlookup import ElementClassLookup
 from ._docloader import _ResolverRegistry
-from ._element import _Element, _ElementTree
+from ._element import Element, ElementTree
 from ._xmlerror import _ListErrorLog
 from ._xmlschema import XMLSchema
 
@@ -86,7 +86,7 @@ class iterparse(Iterator[_T_co]):
         huge_tree: bool = ...,
         collect_ids: bool = ...,
         schema: XMLSchema | None = ...,
-    ) -> iterparse[tuple[Literal["end"], _Element]]: ...
+    ) -> iterparse[tuple[Literal["end"], Element]]: ...
     @overload  # element-only events
     def __new__(
         cls,
@@ -110,7 +110,7 @@ class iterparse(Iterator[_T_co]):
         huge_tree: bool = ...,
         collect_ids: bool = ...,
         schema: XMLSchema | None = ...,
-    ) -> iterparse[tuple[_NoNSEventNames, _Element]]: ...
+    ) -> iterparse[tuple[_NoNSEventNames, Element]]: ...
     @overload  # html mode -> namespace events suppressed
     def __new__(
         cls,
@@ -134,7 +134,7 @@ class iterparse(Iterator[_T_co]):
         huge_tree: bool = ...,
         collect_ids: bool = ...,
         schema: XMLSchema | None = ...,
-    ) -> iterparse[tuple[_NoNSEventNames, _Element]]: ...
+    ) -> iterparse[tuple[_NoNSEventNames, Element]]: ...
     @overload  # xml mode & NS-only events
     def __new__(
         cls,
@@ -185,14 +185,14 @@ class iterparse(Iterator[_T_co]):
         collect_ids: bool = ...,
         schema: XMLSchema | None = ...,
     ) -> iterparse[
-        tuple[_NoNSEventNames, _Element]
+        tuple[_NoNSEventNames, Element]
         | tuple[Literal["start-ns"], tuple[str, str]]
         | tuple[Literal["end-ns"], None]
     ]: ...
     def __next__(self) -> _T_co: ...
     # root property only present after parsing is done
     @property
-    def root(self) -> _Element | None: ...
+    def root(self) -> Element | None: ...
     @property
     def error_log(self) -> _ListErrorLog: ...
     @property
@@ -210,7 +210,7 @@ class iterparse(Iterator[_T_co]):
         attrib: SupportsLaxedItems[str, _AnyStr] | None = ...,
         nsmap: _NSMapArg | None = ...,
         **_extra: _AnyStr,
-    ) -> _Element: ...  # from etree pull parsers
+    ) -> Element: ...  # from etree pull parsers
 
 class iterwalk(Iterator[_T_co]):
     """Tree walker that generates events from an existing tree as if it
@@ -242,21 +242,21 @@ class iterwalk(Iterator[_T_co]):
     @overload  # default events
     def __new__(
         cls,
-        element_or_tree: _ET_co | _ElementTree[_ET_co],
+        element_or_tree: _ET_co | ElementTree[_ET_co],
         events: None = ...,
         tag: _TagSelector | Iterable[_TagSelector] | None = ...,
     ) -> iterwalk[tuple[Literal["end"], _ET_co]]: ...
     @overload  # element-only events
     def __new__(
         cls,
-        element_or_tree: _ET_co | _ElementTree[_ET_co],
+        element_or_tree: _ET_co | ElementTree[_ET_co],
         events: Iterable[_NoNSEventNames],
         tag: _TagSelector | Iterable[_TagSelector] | None = ...,
     ) -> iterwalk[tuple[_NoNSEventNames, _ET_co]]: ...
     @overload  # namespace-only events
     def __new__(
         cls,
-        element_or_tree: _ET_co | _ElementTree[_ET_co],
+        element_or_tree: _ET_co | ElementTree[_ET_co],
         events: Iterable[Literal["start-ns", "end-ns"]],
         tag: _TagSelector | Iterable[_TagSelector] | None = ...,
     ) -> iterwalk[
@@ -265,7 +265,7 @@ class iterwalk(Iterator[_T_co]):
     @overload  # catch-all
     def __new__(
         cls,
-        element_or_tree: _ET_co | _ElementTree[_ET_co],
+        element_or_tree: _ET_co | ElementTree[_ET_co],
         events: Iterable[_SaxEventNames],
         tag: _TagSelector | Iterable[_TagSelector] | None = ...,
     ) -> iterwalk[

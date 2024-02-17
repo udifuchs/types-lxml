@@ -1,24 +1,24 @@
 - case: properties
   parametrized:
     - prop: parser
-      rt: 'Union\[[\w\.]+\.XMLParser\[[\w\.]+\._Element], [\w\.]+\.HTMLParser\[[\w\.]+\._Element], None]'
+      rt: 'Union\[[\w\.]+\.XMLParser\[[\w\.]+\.Element], [\w\.]+\.HTMLParser\[[\w\.]+\.Element], None]'
     - prop: docinfo
       rt: '[\w\.]+\.DocInfo'
   main: |
-    from lxml.etree import _ElementTree, _Element
-    et: _ElementTree[_Element]
+    from lxml.etree import ElementTree, Element
+    et: ElementTree[Element]
     reveal_type(et.{{ prop }})  # NR: .+ "{{ rt }}"$
-    et.{{ prop }} = et.{{ prop }}  # E: Property "{{ prop }}" defined in "_ElementTree" is read-only  [misc]
+    et.{{ prop }} = et.{{ prop }}  # E: Property "{{ prop }}" defined in "ElementTree" is read-only  [misc]
 
 - case: no_arg_or_return_methods
   main: |
-    from lxml.etree import _ElementTree, _Element
-    root: _Element
-    et: _ElementTree[_Element]
-    r = et.xinclude()  # E: "xinclude" of "_ElementTree" does not return a value  [func-returns-value]
-    r = et._setroot(root)  # E: "_setroot" of "_ElementTree" does not return a value  [func-returns-value]
-    reveal_type(et.getroot())  # NR: .+ "[\w\.]+\._Element"$
-    et._setroot(et)  # E: Argument 1 to "_setroot" of "_ElementTree" has incompatible type "_ElementTree[_Element]"; expected "_Element"  [arg-type]
+    from lxml.etree import ElementTree, Element
+    root: Element
+    et: ElementTree[Element]
+    r = et.xinclude()  # E: "xinclude" of "ElementTree" does not return a value  [func-returns-value]
+    r = et._setroot(root)  # E: "_setroot" of "ElementTree" does not return a value  [func-returns-value]
+    reveal_type(et.getroot())  # NR: .+ "[\w\.]+\.Element"$
+    et._setroot(et)  # E: Argument 1 to "_setroot" of "ElementTree" has incompatible type "ElementTree[Element]"; expected "Element"  [arg-type]
 
 - case: no_arg_or_return_methods_toomanyargs
   parametrized:
@@ -29,90 +29,90 @@
     - method: getroot
       kwds: root
   main: |
-    from lxml.etree import _ElementTree, _Element
-    root: _Element
-    et: _ElementTree
-    et.{{ method }}({{ kwds }})  # E: Too many arguments for "{{ method }}" of "_ElementTree"  [call-arg]
+    from lxml.etree import ElementTree, Element
+    root: Element
+    et: ElementTree
+    et.{{ method }}({{ kwds }})  # E: Too many arguments for "{{ method }}" of "ElementTree"  [call-arg]
 
 - case: getpath_family
   parametrized:
     - method: getpath
     - method: getelementpath
   main: |
-    from lxml.etree import _ElementTree, _Element
-    root: _Element
-    et: _ElementTree[_Element]
+    from lxml.etree import ElementTree, Element
+    root: Element
+    et: ElementTree[Element]
     r = et.{{ method }}(root)
     reveal_type(r)  # N: Revealed type is "builtins.str"
-    r = et.{{ method }}()  # E: Missing positional argument "element" in call to "{{ method }}" of "_ElementTree"  [call-arg]
-    r = et.{{ method }}(et)  # E: Argument 1 to "{{ method }}" of "_ElementTree" has incompatible type "_ElementTree[_Element]"; expected "_Element"  [arg-type]
-    r = et.{{ method }}(root, None)  # E: Too many arguments for "{{ method }}" of "_ElementTree"  [call-arg]
+    r = et.{{ method }}()  # E: Missing positional argument "element" in call to "{{ method }}" of "ElementTree"  [call-arg]
+    r = et.{{ method }}(et)  # E: Argument 1 to "{{ method }}" of "ElementTree" has incompatible type "ElementTree[Element]"; expected "Element"  [arg-type]
+    r = et.{{ method }}(root, None)  # E: Too many arguments for "{{ method }}" of "ElementTree"  [call-arg]
 
 - case: validate_family
   parametrized:
     - method: relaxng
     - method: xmlschema
   main: |
-    from lxml.etree import _ElementTree, _Element
-    root: _Element
-    et: _ElementTree[_Element]
+    from lxml.etree import ElementTree, Element
+    root: Element
+    et: ElementTree[Element]
     r = et.{{ method }}(root)
     reveal_type(r)  # N: Revealed type is "builtins.bool"
     r = et.{{ method }}(et)
     reveal_type(r)  # N: Revealed type is "builtins.bool"
-    r = et.{{ method }}()  # E: Missing positional argument "{{ method }}" in call to "{{ method }}" of "_ElementTree"  [call-arg]
-    r = et.{{ method }}(None)  # E: Argument 1 to "{{ method }}" of "_ElementTree" has incompatible type "None"; expected "_Element | _ElementTree[_Element]"  [arg-type]
+    r = et.{{ method }}()  # E: Missing positional argument "{{ method }}" in call to "{{ method }}" of "ElementTree"  [call-arg]
+    r = et.{{ method }}(None)  # E: Argument 1 to "{{ method }}" of "ElementTree" has incompatible type "None"; expected "Element | ElementTree[Element]"  [arg-type]
 
 - case: elementpath_family
   parametrized:
     - method: find
       args: path
-      rt: 'Union\[[\w\.]+\._Element, None]'
+      rt: 'Union\[[\w\.]+\.Element, None]'
     - method: find
       args: tag
-      rt: 'Union\[[\w\.]+\._Element, None]'
+      rt: 'Union\[[\w\.]+\.Element, None]'
     - method: find
       args: path=path
-      rt: 'Union\[[\w\.]+\._Element, None]'
+      rt: 'Union\[[\w\.]+\.Element, None]'
     - method: find
       args: path, nsmap
-      rt: 'Union\[[\w\.]+\._Element, None]'
+      rt: 'Union\[[\w\.]+\.Element, None]'
     - method: find
       args: tag, namespaces=nsmap
-      rt: 'Union\[[\w\.]+\._Element, None]'
+      rt: 'Union\[[\w\.]+\.Element, None]'
     - method: findall
       args: path
-      rt: '[\w\.]+\.list\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.list\[[\w\.]+\.Element]'
     - method: findall
       args: tag
-      rt: '[\w\.]+\.list\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.list\[[\w\.]+\.Element]'
     - method: findall
       args: path=path
-      rt: '[\w\.]+\.list\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.list\[[\w\.]+\.Element]'
     - method: findall
       args: path, nsmap
-      rt: '[\w\.]+\.list\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.list\[[\w\.]+\.Element]'
     - method: findall
       args: tag, namespaces=nsmap
-      rt: '[\w\.]+\.list\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.list\[[\w\.]+\.Element]'
     - method: iterfind
       args: path
-      rt: '[\w\.]+\.Iterator\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.Iterator\[[\w\.]+\.Element]'
     - method: iterfind
       args: tag
-      rt: '[\w\.]+\.Iterator\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.Iterator\[[\w\.]+\.Element]'
     - method: iterfind
       args: path=path
-      rt: '[\w\.]+\.Iterator\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.Iterator\[[\w\.]+\.Element]'
     - method: iterfind
       args: path, nsmap
-      rt: '[\w\.]+\.Iterator\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.Iterator\[[\w\.]+\.Element]'
     - method: iterfind
       args: tag, namespaces=nsmap
-      rt: '[\w\.]+\.Iterator\[[\w\.]+\._Element]'
+      rt: '[\w\.]+\.Iterator\[[\w\.]+\.Element]'
   main: |
     from lxml import etree
-    et: etree._ElementTree[etree._Element]
+    et: etree.ElementTree[etree.Element]
     path: str
     s: str
     tag: etree.QName
@@ -127,14 +127,14 @@
     - method: iterfind
   main: |
     from lxml import etree
-    et: etree._ElementTree[etree._Element]
+    et: etree.ElementTree[etree.Element]
     ok_path: str
     bad_path: bytes
     bad_nsmap = {'a': 1}
-    _ = et.{{ method }}(bad_path)  # E: Argument 1 to "{{ method }}" of "_ElementTree" has incompatible type "bytes"; expected "str | QName"  [arg-type]
-    _ = et.{{ method }}(ok_path, bad_nsmap)  # E: Argument 2 to "{{ method }}" of "_ElementTree" has incompatible type "dict[str, int]"; expected "Mapping[None, str | bytes] | Mapping[str, str | bytes] | Mapping[str | None, str | bytes] | None"  [arg-type]
-    _ = et.{{ method }}(ok_path, None, 1)  # E: Too many arguments for "{{ method }}" of "_ElementTree"  [call-arg]
-    _ = et.{{ method }}(ok_path, badarg=True)  # E: Unexpected keyword argument "badarg" for "{{ method }}" of "_ElementTree"  [call-arg]
+    _ = et.{{ method }}(bad_path)  # E: Argument 1 to "{{ method }}" of "ElementTree" has incompatible type "bytes"; expected "str | QName"  [arg-type]
+    _ = et.{{ method }}(ok_path, bad_nsmap)  # E: Argument 2 to "{{ method }}" of "ElementTree" has incompatible type "dict[str, int]"; expected "Mapping[None, str | bytes] | Mapping[str, str | bytes] | Mapping[str | None, str | bytes] | None"  [arg-type]
+    _ = et.{{ method }}(ok_path, None, 1)  # E: Too many arguments for "{{ method }}" of "ElementTree"  [call-arg]
+    _ = et.{{ method }}(ok_path, badarg=True)  # E: Unexpected keyword argument "badarg" for "{{ method }}" of "ElementTree"  [call-arg]
 
 - case: findtext
   parametrized:
@@ -154,7 +154,7 @@
       rt: builtins.str
   main: |
     from lxml import etree
-    et: etree._ElementTree
+    et: etree.ElementTree
     path: str
     s: str
     tag: etree.QName
@@ -173,7 +173,7 @@
     - args: "ok_path, badarg=True"
   main: |
     from lxml import etree
-    et: etree._ElementTree
+    et: etree.ElementTree
     ok_path: str
     bad_path: bytes
     bad_nsmap = {'a': 1}
@@ -187,11 +187,11 @@
     - args: fileio, parser2, base_url=url
   main: |
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     filename: str
     fileio = open('file', 'r')
-    parser1: etree.XMLParser[etree._Element]
-    parser2: etree.HTMLParser[etree._Element]
+    parser1: etree.XMLParser[etree.Element]
+    parser2: etree.HTMLParser[etree.Element]
     url: str
     tree.parse({{ args }})
 
@@ -204,22 +204,22 @@
     - args: filename, parser1, url
   main: |
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     filename: str
-    parser1: etree.XMLParser[etree._Element]
+    parser1: etree.XMLParser[etree.Element]
     url: str
     tree.parse({{ args }})
 
 - case: iter_noargs
   parametrized:
-    - subtype: _Element
-      itr_t: '[\w\.]+\._Element'
+    - subtype: Element
+      itr_t: '[\w\.]+\.Element'
     - subtype: HtmlElement
       itr_t: '[\w\.]+\.HtmlElement'
   main: |
-    from lxml.etree import _Element, _ElementTree
+    from lxml.etree import Element, ElementTree
     from lxml.html import HtmlElement
-    tree: _ElementTree[{{ subtype }}]
+    tree: ElementTree[{{ subtype }}]
     reveal_type(tree.iter())  # NR: Revealed type is "typing\.Iterator\[{{ itr_t }}]"$
 
 - case: iter
@@ -229,13 +229,13 @@
     - args: factory1, tag1, factory2, tag2
   main: |
     from lxml import etree
-    tree: etree._ElementTree[etree._Element]
+    tree: etree.ElementTree[etree.Element]
     tag1: str
     tag2: bytes
     tag3: etree.QName
     factory1 = etree.Comment
     factory2 = etree.Entity
-    reveal_type(tree.iter({{ args }}))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\._Element]"$
+    reveal_type(tree.iter({{ args }}))  # NR: .+ "[\w\.]+\.Iterator\[[\w\.]+\.Element]"$
 
 - case: iter_badarg
   expect_fail: true
@@ -245,7 +245,7 @@
     - args: tag, tag, 1
   main: |
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     tag: str
     tree.iter({{ args }})
 
@@ -259,7 +259,7 @@
   main: |
     from os import PathLike
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     s: str
     b: bytes
     sp: PathLike[str]
@@ -277,7 +277,7 @@
     - kwds: "inclusive_ns_prefixes=('ns1', 'ns2')"
   main: |
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     filename: str
     tree.write(filename, method="c14n", {{ kwds }})
 
@@ -289,7 +289,7 @@
     - kwds: compression=8
   main: |
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     fileio = open('file', 'wb')
     tree.write(file=fileio, method="c14n2", {{ kwds }})
 
@@ -307,7 +307,7 @@
     - kwds: "pretty_print=True"
   main: |
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     filename: str
     doctype: str
     tree.write(filename, {{ kwds }})
@@ -316,7 +316,7 @@
   expect_fail: true
   main: |
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     tree.write()
 
 - case: write_badarg
@@ -359,7 +359,7 @@
   main: |
     from pathlib import Path
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     strio = open('file', 'w')
     filename: str
     o: object
@@ -376,7 +376,7 @@
     - kwds: "namespaces=ns, extensions=ext1, smart_string=False"
   main: |
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     xpath_expr: str
     s: str
     ns = {s: s}
@@ -391,8 +391,8 @@
 - case: xpath_noarg
   main: |
     from lxml import etree
-    tree: etree._ElementTree
-    tree.xpath()  # E: Too few arguments for "xpath" of "_ElementTree"  [call-arg]
+    tree: etree.ElementTree
+    tree.xpath()  # E: Too few arguments for "xpath" of "ElementTree"  [call-arg]
 
 - case: xpath_badarg
   expect_fail: true
@@ -402,7 +402,7 @@
     - args: "expr, extensions=badext"
   main: |
     from lxml import etree
-    tree: etree._ElementTree
+    tree: etree.ElementTree
     expr: str
     s: str
     badns = {s: 1}
@@ -414,10 +414,10 @@
   main: |
     from typing import Callable, Any
     from lxml import etree
-    tree: etree._ElementTree
-    elem: etree._Element
-    trans1: etree._ElementTree
-    trans2: etree._Element
+    tree: etree.ElementTree
+    elem: etree.Element
+    trans1: etree.ElementTree
+    trans2: etree.Element
     s: str
     ns = (s, s)
     ext: etree.XSLTExtension

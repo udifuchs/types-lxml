@@ -24,7 +24,7 @@ class HTMLParser(etree.HTMLParser[HtmlElement]):
     -----
     This subclass is not specialized, unlike the ``etree`` counterpart.
     They are designed to always handle ``HtmlElement``;
-    for generating other kinds of ``_Elements``, one should use
+    for generating other kinds of ``Elements``, one should use
     etree parsers with ``set_element_class_lookup()`` method instead.
     In that case, see ``_FeedParser.set_element_class_lookup()`` for more info.
     """
@@ -57,7 +57,7 @@ class XHTMLParser(etree.XMLParser[HtmlElement]):
     -----
     This subclass is not specialized, unlike the ``etree`` counterpart.
     They are designed to always handle ``HtmlElement``;
-    for generating other kinds of ``_Elements``, one should use
+    for generating other kinds of ``Elements``, one should use
     etree parsers with ``set_element_class_lookup()`` method instead.
     In that case, see ``_FeedParser.set_element_class_lookup()`` for more info.
 
@@ -142,7 +142,7 @@ def parse(
     parser: _HtmlElemParser | None = ...,
     base_url: str | None = ...,
     **kw: Unused,
-) -> etree._ElementTree[HtmlElement]: ...
+) -> etree.ElementTree[HtmlElement]: ...
 
 #
 # Element Lookup

@@ -31,7 +31,7 @@ class ObjectifiedElement(etree.ElementBase):
     ```
     """
 
-    # Readonly, unlike _Element counterpart
+    # Readonly, unlike Element counterpart
     @property  # type: ignore[misc]
     def text(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
@@ -57,7 +57,7 @@ class ObjectifiedElement(etree.ElementBase):
     @overload
     def __setitem__(self, __k: slice, __v: Iterable[object]) -> None: ...
     def __delitem__(self, __k: int | slice) -> None: ...
-    # TODO Check if _Element methods need overriding
+    # TODO Check if Element methods need overriding
 
 class ObjectifiedDataElement(ObjectifiedElement):
     """The base class for all data type Elements

@@ -12,12 +12,12 @@ from .._types import (
     _ElemClsLookupArg,
     _NSMapArg,
 )
-from ._element import _Comment, _Element, _Entity, _ProcessingInstruction
+from ._element import _Comment, Element, _Entity, _ProcessingInstruction
 
 #
 # Public element classes
 #
-class ElementBase(_Element):
+class ElementBase(Element):
     """The public Element class
 
     Original Docstring
@@ -146,7 +146,7 @@ class ElementDefaultClassLookup(ElementClassLookup):
     accept the respective Element classes."""
 
     @property
-    def element_class(self) -> type[_Element]: ...
+    def element_class(self) -> type[Element]: ...
     @property
     def comment_class(self) -> type[_Comment]: ...
     @property
@@ -180,8 +180,8 @@ class AttributeBasedElementClassLookup(FallbackElementClassLookup):
     def __init__(
         self,
         attribute_name: _AttrName,
-        class_mapping: Mapping[str, type[_Element]]
-        | Mapping[str | None, type[_Element]],
+        class_mapping: Mapping[str, type[Element]]
+        | Mapping[str | None, type[Element]],
         fallback: ElementClassLookup | None = ...,
     ) -> None: ...
 
@@ -218,7 +218,7 @@ class CustomElementClassLookup(FallbackElementClassLookup, metaclass=ABCMeta):
         doc: object,  # Internal doc object
         namespace: str | None,
         name: str | None,
-    ) -> type[_Element] | None: ...
+    ) -> type[Element] | None: ...
 
 class PythonElementClassLookup(FallbackElementClassLookup, metaclass=ABCMeta):
     """Element class lookup based on a subclass method
@@ -272,8 +272,8 @@ class PythonElementClassLookup(FallbackElementClassLookup, metaclass=ABCMeta):
     def lookup(
         self,
         doc: object,
-        element: _Element,  # quasi-Element with all attributes read-only
-    ) -> type[_Element] | None: ...
+        element: Element,  # quasi-Element with all attributes read-only
+    ) -> type[Element] | None: ...
 
 def set_element_class_lookup(lookup: ElementClassLookup | None = ...) -> None:
     """Set the global element class lookup method

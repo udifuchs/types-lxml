@@ -6,7 +6,7 @@ from pathlib import Path, PurePosixPath
 import pytest
 import typeguard
 from _testutils import run_pyright_on
-from lxml.etree import _Element, _ElementTree
+from lxml.etree import Element, ElementTree
 from lxml.html import HtmlElement, parse
 
 typeguard.config.forward_ref_policy = typeguard.ForwardRefPolicy.ERROR
@@ -44,14 +44,14 @@ def x2_filepath() -> Path:
 
 
 @pytest.fixture
-def html_tree(h1_filepath: Path) -> _ElementTree[HtmlElement]:
+def html_tree(h1_filepath: Path) -> ElementTree[HtmlElement]:
     with open(h1_filepath, "r", encoding="utf-8") as f:
         tree = parse(f)
     return tree
 
 
 @pytest.fixture
-def xml_tree(x2_filepath: Path) -> _ElementTree[_Element]:
+def xml_tree(x2_filepath: Path) -> ElementTree[Element]:
     with open(x2_filepath, "r", encoding="ascii") as f:
         tree = parse(f)
     return tree

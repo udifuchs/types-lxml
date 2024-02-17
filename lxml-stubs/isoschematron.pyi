@@ -51,7 +51,7 @@ class Schematron(_e._Validator):
     _compile: ClassVar[_e.XSLT]
     _validation_errors: ClassVar[_e.XPath]
     # _extract() can be a mean of customisation like some of the vars above
-    def _extract(self, element: _e._Element) -> _e._ElementTree[_e._Element] | None: ...
+    def _extract(self, element: _e.Element) -> _e.ElementTree[_e.Element] | None: ...
 
     # The overload arg matrix is daunting (3 * 2**3) without much benefit:
     # - etree / file

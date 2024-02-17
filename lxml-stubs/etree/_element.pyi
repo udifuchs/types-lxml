@@ -8,10 +8,18 @@ from ._module_misc import CDATA, DocInfo, QName
 from ._parser import _DefEtreeParsers
 from ._xslt import XSLTAccessControl, XSLTExtension, _Stylesheet_Param, _XSLTResultTree
 
-# The base of _Element is *almost* an amalgam of MutableSequence[_Element]
+# The base of Element is *almost* an amalgam of MutableSequence[Element]
 # plus mixin methods for _Attrib.
-# Extra methods follow the order of _Element source approximately
-class _Element:
+# Extra methods follow the order of Element source approximately
+class Element:
+    def __new__(  # Args identical to Element.makeelement
+        cls,
+        _tag: _t._TagName,
+        /,
+        attrib: _t.SupportsLaxedItems[str, _t._AnyStr] | None = ...,
+        nsmap: _t._NSMapArg | None = ...,
+        **_extra: _t._AnyStr,
+    ) -> Self: ...
     #
     # Common properties
     #
@@ -30,7 +38,7 @@ class _Element:
     @tail.setter
     def tail(self, value: _t._AnyStr | CDATA | None) -> None: ...
     #
-    # _Element-only properties
+    # Element-only properties
     # Following props are marked as read-only in comment,
     # but 'sourceline' and 'base' provide __set__ method.
     # However, we only implement rw property for base, as
@@ -89,7 +97,7 @@ class _Element:
     def getparent(self) -> Self | None: ...
     def getnext(self) -> Self | None: ...
     def getprevious(self) -> Self | None: ...
-    def getroottree(self) -> _ElementTree[Self]: ...
+    def getroottree(self) -> ElementTree[Self]: ...
     @overload
     def itersiblings(
         self, *tags: _t._TagSelector, preceding: bool = ...
@@ -200,7 +208,25 @@ class _Element:
 # element, the absolute majority of lxml API will fail to work.
 # It is considered harmful to support such corner case, which
 # adds much complexity without any benefit.
-class _ElementTree(Generic[_t._ET_co]):
+class ElementTree(Generic[_t._ET_co]):
+    @overload  # from element, parser ignored
+    def __new__(cls: type[_t._ETT], element: _t._ET) -> _t._ETT: ...
+    @overload  # from file source, custom parser
+    def __new__(
+        cls: type[_t._ETT_co],
+        element: None = ...,
+        *,
+        file: _t._FileReadSource,
+        parser: _DefEtreeParsers[_t._ET_co],
+    ) -> _t._ETT_co: ...
+    @overload  # from file source, default parser
+    def __new__(
+        cls: type[_t._ETT],
+        element: None = ...,
+        *,
+        file: _t._FileReadSource,
+        parser: None = ...,
+    ) -> _t._ETT: ...
     @property
     def parser(self) -> _DefEtreeParsers[_t._ET_co] | None: ...
     @property
@@ -215,7 +241,7 @@ class _ElementTree(Generic[_t._ET_co]):
     # Changes root node; in terms of typing, this means changing
     # specialization of ElementTree. This is not expressible in
     # current typing system.
-    def _setroot(self, root: _Element) -> None: ...
+    def _setroot(self, root: Element) -> None: ...
     def getroot(self) -> _t._ET_co: ...
     # Special notes for write()
     # For write(), there are quite many combination of keyword
@@ -271,15 +297,15 @@ class _ElementTree(Generic[_t._ET_co]):
         doctype: str | None = ...,
         compression: int | None = ...,
     ) -> None: ...
-    def getpath(self: _ElementTree[_t._ET], element: _t._ET) -> str: ...
-    def getelementpath(self: _ElementTree[_t._ET], element: _t._ET) -> str: ...
+    def getpath(self: ElementTree[_t._ET], element: _t._ET) -> str: ...
+    def getelementpath(self: ElementTree[_t._ET], element: _t._ET) -> str: ...
     @overload
     def iter(self, *tags: _t._TagSelector) -> Iterator[_t._ET_co]: ...
     @overload
     def iter(self, *, tag: _t._TagSelector | None = ...) -> Iterator[_t._ET_co]: ...
     #
     # ElementPath methods calls the same method on root node,
-    # so signature should be the same as _Element ones
+    # so signature should be the same as Element ones
     #
     def find(
         self, path: _t._ElemPathArg, namespaces: _t._NSMapArg | None = ...
@@ -348,7 +374,7 @@ class _ElementTree(Generic[_t._ET_co]):
 # Behaves like MutableMapping but deviates a lot in details
 class _Attrib:
     @property
-    def _element(self) -> _Element: ...
+    def _element(self) -> Element: ...
     def __setitem__(self, __k: _t._AttrName, __v: _t._AttrVal) -> None: ...
     def __delitem__(self, __k: _t._AttrName) -> None: ...
     # explicitly checks for dict and _Attrib
@@ -398,13 +424,13 @@ class _Attrib:
 # So here we are.
 #
 # It is decided to not decouple other content only elements
-# from _Element, even though their interfaces are vastly different
-# from _Element. The notion of or'ing different kind of elements
+# from Element, even though their interfaces are vastly different
+# from Element. The notion of or'ing different kind of elements
 # throughout all element methods would cause great inconvenience
 # for me and all users alike -- using some _AnyHtmlElement alias
 # to represent union of all elements was a failure for users.
 # We opt for convenience and ease of use in the future.
-class __ContentOnlyElement(_Element):
+class __ContentOnlyElement(Element):
     #
     # Useful properties
     #
@@ -441,7 +467,7 @@ class _Comment(__ContentOnlyElement):
     @property  # type: ignore[misc]
     def tag(self) -> _t._ElemFactory[_Comment]: ...  # type: ignore[override]
 
-# signature of .get() for _PI and _Element are the same
+# signature of .get() for _PI and Element are the same
 class _ProcessingInstruction(__ContentOnlyElement):
     @property  # type: ignore[misc]
     def tag(self) -> _t._ElemFactory[_ProcessingInstruction]: ...  # type: ignore[override]

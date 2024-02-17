@@ -13,7 +13,7 @@
   expect_fail: true
   main: |
     from lxml import etree
-    elem: etree._Element
+    elem: etree.Element
     s: str
     b: bytes
     crazy_nsmap = {None: s, s: b}
@@ -40,8 +40,8 @@
 - case: mypy_3004_element_prop
   expect_fail: true
   main: |
-    from lxml.etree import _Element
-    el: _Element
+    from lxml.etree import Element
+    el: Element
     b: bytes
     el.base = b
     el.tag = b
