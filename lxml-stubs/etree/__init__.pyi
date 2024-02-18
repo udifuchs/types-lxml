@@ -29,7 +29,9 @@ from ._element import (
     _Attrib as _Attrib,
     _Comment as _Comment,
     Element as Element,
+    _Element as _Element,
     ElementTree as ElementTree,
+    _ElementTree as _ElementTree,
     _Entity as _Entity,
     _ProcessingInstruction as _ProcessingInstruction,
 )

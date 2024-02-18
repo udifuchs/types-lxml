@@ -4,7 +4,7 @@ import copy
 
 import _testutils
 import pytest
-from lxml.etree import Element, ElementTree
+from lxml.etree import Element, ElementTree, _Element, _ElementTree
 
 reveal_type = getattr(_testutils, "reveal_type_wrapper")
 
@@ -53,3 +53,6 @@ class TestXmlAttrib:
         reveal_type(ii)
         for i in ii:
             reveal_type(i)
+
+    def test_deprecated_types(self, xml_tree: _ElementTree[_Element]) -> None:
+        reveal_type(xml_tree)

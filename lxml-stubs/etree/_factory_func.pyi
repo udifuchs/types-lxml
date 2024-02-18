@@ -1,19 +1,11 @@
-from typing import overload, TypeVar
-from typing_extensions import Self
-
 from .._types import (
     _ET,
     SupportsLaxedItems,
     _AnyStr,
-    _ET_co,
-    _ETT,
-    _ETT_co,
-    _FileReadSource,
     _NSMapArg,
     _TagName,
 )
 from ._element import _Comment, _Entity, _ProcessingInstruction
-from ._parser import _DefEtreeParsers
 
 def Comment(text: _AnyStr | None = ...) -> _Comment: ...
 def ProcessingInstruction(

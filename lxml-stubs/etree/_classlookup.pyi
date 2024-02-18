@@ -4,6 +4,7 @@
 
 from abc import ABCMeta, abstractmethod
 from typing import Mapping, final
+from typing_extensions import Self
 
 from .._types import (
     SupportsLaxedItems,
@@ -56,6 +57,14 @@ class ElementBase(Element):
     """
 
     @final
+    def __new__(
+        cls,
+        *children: object,
+        attrib: SupportsLaxedItems[str, _AnyStr] | None = ...,
+        nsmap: _NSMapArg | None = ...,
+        **_extra: _AnyStr,
+    ) -> Self: ...
+    @final
     def __init__(
         self,
         *children: object,
@@ -81,6 +90,8 @@ class CommentBase(_Comment):
     """
 
     @final
+    def __new__(cls, text: _AnyStr | None = ...) -> Self: ...
+    @final
     def __init__(self, text: _AnyStr | None = ...) -> None: ...
     def _init(self) -> None: ...
 
@@ -101,6 +112,8 @@ class PIBase(_ProcessingInstruction):
     """
 
     @final
+    def __new__(cls, target: _AnyStr, text: _AnyStr | None = ...) -> Self: ...
+    @final
     def __init__(self, target: _AnyStr, text: _AnyStr | None = ...) -> None: ...
     def _init(self) -> None: ...
 
@@ -117,6 +130,8 @@ class EntityBase(_Entity):
     called after object creation.
     """
 
+    @final
+    def __new__(cls, name: _AnyStr) -> Self: ...
     @final
     def __init__(self, name: _AnyStr) -> None: ...
     def _init(self) -> None: ...

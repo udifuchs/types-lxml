@@ -1,6 +1,6 @@
 from _typeshed import _T
 from typing import Any, Generic, Iterable, Iterator, Literal, Mapping, overload
-from typing_extensions import Never, Self, deprecated
+from typing_extensions import Never, Self, deprecated, TypeAlias
 
 from .. import _types as _t
 from ..cssselect import _CSSTransArg
@@ -201,6 +201,8 @@ class Element:
         self, tag: _t._TagSelector | None = ..., *tags: _t._TagSelector
     ) -> Iterator[Self]: ...
 
+_Element: TypeAlias = Element
+
 # ET class notation is specialized, indicating the type of element
 # it is holding (e.g. XML element, HTML element or Objectified
 # Element).
@@ -210,7 +212,7 @@ class Element:
 # adds much complexity without any benefit.
 class ElementTree(Generic[_t._ET_co]):
     @overload  # from element, parser ignored
-    def __new__(cls: type[_t._ETT], element: _t._ET) -> _t._ETT: ...
+    def __new__(cls: type[_t._ETT], element: Element) -> _t._ETT: ...
     @overload  # from file source, custom parser
     def __new__(
         cls: type[_t._ETT_co],
@@ -370,6 +372,8 @@ class ElementTree(Generic[_t._ET_co]):
         compression: int | None = ...,
         inclusive_ns_prefixes: Iterable[_t._AnyStr] | None = ...,
     ) -> None: ...
+
+_ElementTree: TypeAlias = ElementTree[_t._ET_co]
 
 # Behaves like MutableMapping but deviates a lot in details
 class _Attrib:
