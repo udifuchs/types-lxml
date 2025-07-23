@@ -138,6 +138,7 @@ def XPathEvaluator(
     regexp: bool = True,
     smart_strings: bool = True,
 ) -> XPathDocumentEvaluator: ...
+
 @final
 class _ElementUnicodeResult(str, Generic[_ET]):
     """Smart string is a private str subclass documented in
